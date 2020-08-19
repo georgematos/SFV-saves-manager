@@ -2,11 +2,6 @@
   "name": "angular-electron",
   "version": "8.0.3",
   "description": "Angular 10 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
-  "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
-  },
   "keywords": [
     "angular",
     "angular 10",
@@ -95,5 +90,10 @@
   },
   "engines": {
     "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "bootstrap": "4.5.2",
+    "jquery": "3.5.1",
+    "popper.js": "1.16.1"
   }
 }
