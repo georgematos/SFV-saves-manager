@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +9,29 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  public formLogin: FormGroup;
+
   constructor(
     private router: Router,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    this.formLogin = this.formBuilder.group({
+      name: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(5)
+      ])],
+      password: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(6)
+      ])]
+    })
+  }
+
+  public login(): void {
+    console.log(this.formLogin.value.name);
+    console.log(this.formLogin.value.password);
   }
 
 }

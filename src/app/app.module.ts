@@ -15,9 +15,10 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HomeModule } from './home/home.module';
-import { DetailModule } from './detail/detail.module';
+import { SignupModule } from './signup/signup.module';
 
 import { AppComponent } from './app.component';
+import { TitleBarComponent } from './title-bar/title-bar.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -25,7 +26,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TitleBarComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -33,7 +34,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CoreModule,
     SharedModule,
     HomeModule,
-    DetailModule,
+    SignupModule,
     AppRoutingModule,
     HttpClientModule,
     TranslateModule.forRoot({

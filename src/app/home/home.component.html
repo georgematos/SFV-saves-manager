@@ -1,7 +1,20 @@
-<div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+<div class="container d-flex flex-column justify-content-center">
+  <div class="p-3">
+    <form [formGroup]="formLogin" class="form-group d-flex flex-column" style="width: 250px" (ngSubmit)="login()">
 
-  <a routerLink="/detail">{{ 'PAGES.HOME.GO_TO_DETAIL' | translate }}</a>
+      Nome:
+      <input type="text" formControlName="name">
+      <div *ngIf="formLogin.get('name').invalid && formLogin.get('name').touched" class="alert alert-danger">Nome inválido</div>
+
+      Senha:
+      <input type="password" formControlName="password">
+      <div *ngIf="formLogin.get('password').invalid && formLogin.get('password').touched" class="alert alert-danger">Senha inválida</div>
+      
+
+      <button type="submit" [disabled]="!formLogin.valid" class="btn btn-primary btn-sm btn-block" style="margin-top: 10px;">Login</button>
+    </form>
+  </div>
+  <div class="p-3">
+    <a routerLink="/signup">{{ 'PAGES.HOME.GO_TO_SIGNUP' | translate }}</a>
+  </div>
 </div>

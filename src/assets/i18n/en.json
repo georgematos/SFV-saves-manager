@@ -1,12 +1,14 @@
 {
+  "GLOBAL": {
+    "TITLE": "SFV Saves Manager"
+  },
   "PAGES": {
-      "HOME": {
-          "TITLE": "App works !",
-          "GO_TO_DETAIL": "Go to Detail"
-      },
-      "DETAIL": {
-        "TITLE": "Detail page !",
-        "BACK_TO_HOME": "Back to Home"
+    "HOME": {
+      "LOGIN": "Login",
+      "PASSWORD": "Password"
+    },
+    "SIGNUP": {
+      "GO_TO_HOME": "Login"
     }
   }
 }
