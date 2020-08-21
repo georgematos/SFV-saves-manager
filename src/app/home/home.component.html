@@ -1,20 +1,43 @@
-<div class="container d-flex flex-column justify-content-center">
-  <div class="p-3">
-    <form [formGroup]="formLogin" class="form-group d-flex flex-column" style="width: 250px" (ngSubmit)="login()">
-
-      Nome:
-      <input type="text" formControlName="name">
-      <div *ngIf="formLogin.get('name').invalid && formLogin.get('name').touched" class="alert alert-danger">Nome inválido</div>
-
-      Senha:
-      <input type="password" formControlName="password">
-      <div *ngIf="formLogin.get('password').invalid && formLogin.get('password').touched" class="alert alert-danger">Senha inválida</div>
-      
-
-      <button type="submit" [disabled]="!formLogin.valid" class="btn btn-primary btn-sm btn-block" style="margin-top: 10px;">Login</button>
-    </form>
-  </div>
-  <div class="p-3">
-    <a routerLink="/signup">{{ 'PAGES.HOME.GO_TO_SIGNUP' | translate }}</a>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+      <form
+        [formGroup]="formLogin"
+        class="form-group d-flex flex-column"
+        (ngSubmit)="login()"
+      >
+        <label>{{ "PAGES.HOME.LOGIN" | translate }}:</label>
+        <input type="text" formControlName="name" style="margin-bottom: 10px;"/>
+        <div
+          *ngIf="formLogin.get('name').invalid && formLogin.get('name').touched"
+          class="alert alert-danger"
+        >
+          {{ "ERROR.INVALID_NAME" | translate }}
+        </div>
+  
+        <label>{{ "PAGES.HOME.PASSWORD" | translate }}:</label>
+        <input type="password" formControlName="password" style="margin-bottom: 10px;"/>
+        <div
+          *ngIf="
+            formLogin.get('password').invalid && formLogin.get('password').touched
+          "
+          class="alert alert-danger"
+        >
+        {{ "ERROR.INVALID_PASSWORD" | translate }}
+        </div>
+  
+        <button
+          type="submit"
+          [disabled]="!formLogin.valid"
+          class="btn btn-primary btn-sm btn-block"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+    <div class="col-sm-3">
+      <a routerLink="/signup">{{ "PAGES.HOME.GO_TO_SIGNUP" | translate }}</a>
+    </div>
   </div>
 </div>

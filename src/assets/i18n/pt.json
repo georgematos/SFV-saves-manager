@@ -11,5 +11,9 @@
     "SIGNUP": {
       "GO_TO_HOME": "Login"
     }
+  },
+  "ERROR": {
+    "INVALID_NAME": "Nome inválido",
+    "INVALID_PASSWORD": "Senha inválida"
   }
 }
