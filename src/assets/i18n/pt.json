@@ -12,6 +12,7 @@
       "USERNAME": "Nome de Usuário",
       "PASSWORD":  "Senha",
       "EMAIL": "Email",
+      "SIGNUP": "Cadastrar",
       "GO_TO_HOME": "Login"
     }
   },
