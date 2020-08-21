@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +11,6 @@ export class HomeComponent implements OnInit {
   public formLogin: FormGroup;
 
   constructor(
-    private router: Router,
     private formBuilder: FormBuilder
   ) { }
 

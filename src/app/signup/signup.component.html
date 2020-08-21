@@ -1,3 +1,54 @@
 <div class="container">
-  <a routerLink="/">{{ 'PAGES.SIGNUP.GO_TO_HOME' | translate }}</a>
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+      <form
+        [formGroup]="formLogin"
+        class="form-group d-flex flex-column"
+        (ngSubmit)="signup()"
+      >
+        <label>{{ "PAGES.SIGNUP.USERNAME" | translate }}:</label>
+        <input type="text" formControlName="username" style="margin-bottom: 10px;"/>
+        <div
+          *ngIf="formLogin.get('username').invalid && formLogin.get('username').touched"
+          class="alert alert-danger"
+        >
+          {{ "ERROR.INVALID_NAME" | translate }}
+        </div>
+  
+        <label>{{ "PAGES.SIGNUP.PASSWORD" | translate }}:</label>
+        <input type="password" formControlName="password" style="margin-bottom: 10px;"/>
+        <div
+          *ngIf="
+            formLogin.get('password').invalid && formLogin.get('password').touched
+          "
+          class="alert alert-danger"
+        >
+        {{ "ERROR.INVALID_PASSWORD" | translate }}
+        </div>
+
+        <label>{{ "PAGES.SIGNUP.EMAIL" | translate }}:</label>
+        <input type="email" formControlName="email" style="margin-bottom: 10px;"/>
+        <div
+          *ngIf="
+            formLogin.get('email').invalid && formLogin.get('email').touched
+          "
+          class="alert alert-danger"
+        >
+        {{ "ERROR.INVALID_EMAIL" | translate }}
+        </div>
+  
+        <button
+          type="submit"
+          [disabled]="!formLogin.valid"
+          class="btn btn-primary btn-sm btn-block"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+    <div class="col-sm-3">
+      <a routerLink="/home">{{ "PAGES.SIGNUP.GO_TO_HOME" | translate }}</a>
+    </div>
+  </div>
 </div>
