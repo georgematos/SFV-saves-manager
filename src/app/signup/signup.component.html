@@ -1,6 +1,12 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-3"></div>
+    <div class="col-sm-3 d-flex justify-content-center">
+      <svg width="8em" height="8em" viewBox="0 0 16 16" class="bi bi-file-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M4 1h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H4z"/>
+        <path d="M13.784 14c-.497-1.27-1.988-3-5.784-3s-5.287 1.73-5.784 3h11.568z"/>
+        <path fill-rule="evenodd" d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+      </svg>
+    </div>
     <div class="col-sm-6">
       <form
         [formGroup]="formLogin"
@@ -23,6 +29,21 @@
           class="alert alert-danger"
         >
           {{ "ERROR.INVALID_PASSWORD" | translate }}
+        </div>
+
+        <label>{{ "PAGES.SIGNUP.PASSWORD_REPEAT" | translate }}:</label>
+        <input type="password" formControlName="controlPassword" style="margin-bottom: 10px;"/>
+        <div
+          *ngIf="formLogin.get('controlPassword').invalid && formLogin.get('controlPassword').touched"
+          class="alert alert-danger"
+        >
+          {{ "ERROR.INVALID_PASSWORD" | translate }}
+        </div>
+    
+        <div 
+          *ngIf="formLogin.get('controlPassword').invalid && formLogin.get('controlPassword').errors.confirmPasswordValidator"
+          class="alert alert-danger">
+            {{ "ERROR.DIFFERENT_PASSWORD" | translate }}
         </div>
   
         <button

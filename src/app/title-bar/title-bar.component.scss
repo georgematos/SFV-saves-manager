@@ -1,12 +1,15 @@
 .title-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: rgb(255,4,0);
-    background: linear-gradient(90deg, rgba(255,4,0,1) 0%, rgba(0,91,255,1) 100%);
+    background: linear-gradient(90deg, rgba(255,4,0,1) 0%, rgba(0,189,255,1) 100%);
     color: white;
     font-weight: bold;
-    height: 55px;
     font-size: large;
+    height: 70px;
+    border-radius: 0px 0px 5px 5px;
     margin-bottom: 10px;
+    box-shadow: 0px 0px 8px 0px #aaaaaa;
+}
+
+.sfv-logo {
+    width: 64px;
 }

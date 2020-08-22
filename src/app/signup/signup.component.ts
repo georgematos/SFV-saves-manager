@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { FirebaseService } from '../core/services/firebase/firebase.service';
-import { User } from 'app/models/user.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from 'app/models/user.model';
+import { FirebaseService } from '../core/services/firebase/firebase.service';
+import { ConfirmPasswordValidator } from '../validators/confirm-password.validator';
 
 @Component({
   selector: 'app-signup',
@@ -30,7 +31,15 @@ export class SignupComponent implements OnInit {
         Validators.required,
         Validators.minLength(6)
       ])],
-    })
+      controlPassword: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(6)
+      ])],
+    },
+    {
+      validator: ConfirmPasswordValidator("password", "controlPassword")
+    });
+    console.log(this.formLogin);
   }
 
   public signup(): void {

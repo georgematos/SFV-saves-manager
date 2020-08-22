@@ -10,6 +10,7 @@
     },
     "SIGNUP": {
       "PASSWORD":  "Senha",
+      "PASSWORD_REPEAT": "Repita a senha",
       "EMAIL": "Email",
       "SIGNUP": "Cadastrar",
       "GO_TO_HOME": "Login"
@@ -18,6 +19,7 @@
   "ERROR": {
     "INVALID_LOGIN": "Login inválido",
     "INVALID_PASSWORD": "Senha inválida",
-    "INVALID_EMAIL": "Email inválido"
+    "INVALID_EMAIL": "Email inválido",
+    "DIFFERENT_PASSWORD": "As senhas são diferentes"
   }
 }
