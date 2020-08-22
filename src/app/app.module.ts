@@ -9,16 +9,15 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { TitleBarComponent } from './title-bar/title-bar.component';
+import { LoginModule } from './login/login.module';
+import { SignupModule } from './signup/signup.module';
+import { HomeModule } from './home/home.module';
 
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-import { LoginModule } from './login/login.module';
-import { SignupModule } from './signup/signup.module';
-
-import { AppComponent } from './app.component';
-import { TitleBarComponent } from './title-bar/title-bar.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -28,7 +27,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 @NgModule({
   declarations: [
     AppComponent,
-    TitleBarComponent
+    TitleBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +36,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CoreModule,
     SharedModule,
     LoginModule,
+    HomeModule,
     SignupModule,
     AppRoutingModule,
     HttpClientModule,

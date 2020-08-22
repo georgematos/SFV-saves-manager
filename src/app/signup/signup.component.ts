@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { FireBaseService } from '../core/services/firebase/firebase.service';
+import { FirebaseService } from '../core/services/firebase/firebase.service';
 import { User } from 'app/models/user.model';
 import { Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private fireBaseService: FireBaseService,
+    private firebaseService: FirebaseService,
     private router: Router
   ) { }
 
@@ -34,8 +34,8 @@ export class SignupComponent implements OnInit {
 
   public signup(): void {
     let user = new User(this.formLogin.value.email, this.formLogin.value.password, []);
-    this.fireBaseService.signup(user).then(() => {
-      if (this.fireBaseService.signUpError === undefined) {
+    this.firebaseService.signup(user).then(() => {
+      if (this.firebaseService.signUpError === undefined) {
         this.router.navigate(['home']);
       }
     });

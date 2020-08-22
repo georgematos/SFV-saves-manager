@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { exit } from 'process';
 
 @Injectable()
-export class FireBaseService {
+export class FirebaseService {
 
   public signUpError: string;
   public authError: string;
@@ -57,7 +57,8 @@ export class FireBaseService {
 
   public logout(): void {
     firebase.auth().signOut();
-    localStorage.removeItem('idToken')
+    localStorage.removeItem('idToken');
     this.token_id = undefined;
+    this.router.navigate(['/']);
   }
 }
