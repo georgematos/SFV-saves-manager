@@ -14,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HomeModule } from './home/home.module';
+import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 
 import { AppComponent } from './app.component';
@@ -26,14 +26,17 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent, TitleBarComponent],
+  declarations: [
+    AppComponent,
+    TitleBarComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     CoreModule,
     SharedModule,
-    HomeModule,
+    LoginModule,
     SignupModule,
     AppRoutingModule,
     HttpClientModule,

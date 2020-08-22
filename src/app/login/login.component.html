@@ -7,16 +7,16 @@
         class="form-group d-flex flex-column"
         (ngSubmit)="login()"
       >
-        <label>{{ "PAGES.HOME.LOGIN" | translate }}:</label>
-        <input type="text" formControlName="name" style="margin-bottom: 10px;"/>
+        <label>{{ "PAGES.LOGIN.LOGIN" | translate }}:</label>
+        <input type="text" formControlName="email" style="margin-bottom: 10px;"/>
         <div
-          *ngIf="formLogin.get('name').invalid && formLogin.get('name').touched"
+          *ngIf="formLogin.get('email').invalid && formLogin.get('email').touched"
           class="alert alert-danger"
         >
-          {{ "ERROR.INVALID_NAME" | translate }}
+          {{ "ERROR.INVALID_LOGIN" | translate }}
         </div>
   
-        <label>{{ "PAGES.HOME.PASSWORD" | translate }}:</label>
+        <label>{{ "PAGES.LOGIN.PASSWORD" | translate }}:</label>
         <input type="password" formControlName="password" style="margin-bottom: 10px;"/>
         <div
           *ngIf="
@@ -37,7 +37,7 @@
       </form>
     </div>
     <div class="col-sm-3">
-      <a routerLink="/signup">{{ "PAGES.HOME.GO_TO_SIGNUP" | translate }}</a>
+      <a routerLink="/signup">{{ "PAGES.LOGIN.GO_TO_SIGNUP" | translate }}</a>
     </div>
   </div>
 </div>

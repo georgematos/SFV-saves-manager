@@ -3,13 +3,12 @@
     "TITLE": "SFV Saves Manager"
   },
   "PAGES": {
-    "HOME": {
+    "LOGIN": {
       "LOGIN": "Login",
       "PASSWORD": "Senha",
       "GO_TO_SIGNUP": "Cadastrar"
     },
     "SIGNUP": {
-      "USERNAME": "Nome de Usuário",
       "PASSWORD":  "Senha",
       "EMAIL": "Email",
       "SIGNUP": "Cadastrar",
@@ -17,7 +16,7 @@
     }
   },
   "ERROR": {
-    "INVALID_NAME": "Nome inválido",
+    "INVALID_LOGIN": "Login inválido",
     "INVALID_PASSWORD": "Senha inválida",
     "INVALID_EMAIL": "Email inválido"
   }
