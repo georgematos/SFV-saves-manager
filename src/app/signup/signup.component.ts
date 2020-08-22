@@ -20,6 +20,7 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.firebaseService.signUpError !== undefined) this.firebaseService.signUpError = undefined;
     this.formLogin = this.formBuilder.group({
       email: ['', Validators.compose([
         Validators.required,

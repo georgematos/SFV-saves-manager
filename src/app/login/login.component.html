@@ -31,9 +31,13 @@
           type="submit"
           [disabled]="!formLogin.valid"
           class="btn btn-primary btn-sm btn-block"
+          style="margin-bottom: 10px;"
         >
           Login
         </button>
+        <div *ngIf="firebaseService.authError" class="alert alert-danger">
+          {{ firebaseService.authError }}
+        </div>
       </form>
     </div>
     <div class="col-sm-3">
