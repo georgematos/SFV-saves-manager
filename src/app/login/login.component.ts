@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
-import { unsupported } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
     )
     .then(() => {
       console.log("login success.")
+      this.router.navigate(['/home']);
     })
   }
 

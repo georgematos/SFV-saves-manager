@@ -8,7 +8,7 @@ import { AuthGuard } from 'app/core/services/firebase/auth-guard-service';
     HomeComponent
   ],
   imports: [
-    HomeRoutingModule
+    HomeRoutingModule,
   ],
   providers: [
     AuthGuard

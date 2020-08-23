@@ -10,7 +10,7 @@
     },
     "SIGNUP": {
       "PASSWORD":  "Senha",
-      "PASSWORD_REPEAT": "Repita a senha",
+      "PASSWORD_CONFIRM": "Confirme a senha",
       "EMAIL": "Email",
       "SIGNUP": "Cadastrar",
       "GO_TO_HOME": "Login"

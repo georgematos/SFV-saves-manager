@@ -36,17 +36,16 @@ export class SignupComponent implements OnInit {
         Validators.minLength(6)
       ])],
     },
-    {
-      validator: ConfirmPasswordValidator("password", "controlPassword")
-    });
-    console.log(this.formLogin);
+      {
+        validator: ConfirmPasswordValidator("password", "controlPassword")
+      });
   }
 
   public signup(): void {
     let user = new User(this.formLogin.value.email, this.formLogin.value.password, []);
-    this.firebaseService.signup(user).then(() => {
+    this.firebaseService.signup(user).then(() => {      
       if (this.firebaseService.signUpError === undefined) {
-        this.router.navigate(['home']);
+        this.router.navigate(['/home']);
       }
     });
   }

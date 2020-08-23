@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { User } from "../../../models/user.model";
+import { Router } from "@angular/router";
 import * as firebase from "firebase/app";
 import 'firebase/auth';
-import { Router } from "@angular/router";
+import 'firebase/database';
 import { exit } from 'process';
+import { User } from "../../../models/user.model";
 
 @Injectable()
 export class FirebaseService {
@@ -20,23 +21,25 @@ export class FirebaseService {
     if (this.signUpError !== undefined) this.signUpError = undefined;
     try {
       await firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-        .then((resp) => {
-          console.log(resp);
-        })
+      .then((auth) => {
+        delete user.password;
+          firebase.database()
+           .ref(`user_data/${auth.user.uid}`)
+           .set(user);
+      });
     } catch (error) {
       this.signUpError = error.message;
     }
   }
 
-  public async login(email: string, senha: string): Promise<any> {
+  public async login(email: string, password: string): Promise<any> {
     if (this.authError !== undefined) this.authError = undefined;
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, senha);
+      await firebase.auth().signInWithEmailAndPassword(email, password);
       firebase.auth().currentUser.getIdToken()
         .then((idToken: string) => {
           this.token_id = idToken;
           localStorage.setItem('idToken', idToken);
-          this.router.navigate(['/home']);
         });
     }
     catch (error) {
@@ -55,10 +58,15 @@ export class FirebaseService {
     return this.token_id !== undefined;
   }
 
-  public logout(): void {
-    firebase.auth().signOut();
-    localStorage.removeItem('idToken');
-    this.token_id = undefined;
-    this.router.navigate(['/']);
+  public async logout(): Promise<any> {
+    try {
+      await firebase.auth().signOut()
+        .then(() => {
+          localStorage.removeItem('idToken');
+          this.token_id = undefined;
+        });
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

@@ -31,7 +31,7 @@
           {{ "ERROR.INVALID_PASSWORD" | translate }}
         </div>
 
-        <label>{{ "PAGES.SIGNUP.PASSWORD_REPEAT" | translate }}:</label>
+        <label>{{ "PAGES.SIGNUP.PASSWORD_CONFIRM" | translate }}:</label>
         <input type="password" formControlName="controlPassword" style="margin-bottom: 10px;"/>
         <div
           *ngIf="formLogin.get('controlPassword').invalid && formLogin.get('controlPassword').touched"
