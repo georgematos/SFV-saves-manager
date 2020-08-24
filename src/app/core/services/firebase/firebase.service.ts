@@ -4,6 +4,8 @@ import * as firebase from "firebase/app";
 import 'firebase/auth';
 import 'firebase/database';
 import { exit } from 'process';
+import { Observable } from "rxjs";
+import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
 
 @Injectable()
@@ -56,6 +58,15 @@ export class FirebaseService {
     this.token_id === undefined ? this.router.navigate(['/']) : exit;
 
     return this.token_id !== undefined;
+  }
+
+  public createAccount(account: Account): Promise<any> {   
+    try {
+      return firebase.database().ref(`user_data/${firebase.auth().currentUser.uid}`)
+        .push(account);
+    } catch(error) {
+      console.log(error);
+    }
   }
 
   public async logout(): Promise<any> {
