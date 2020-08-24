@@ -62,8 +62,8 @@ export class FirebaseService {
 
   public createAccount(account: Account): Promise<any> {   
     try {
-      return firebase.database().ref(`user_data/${firebase.auth().currentUser.uid}/accounts`)
-        .push(account);
+      return firebase.database().ref(`user_data/${firebase.auth().currentUser.uid}/accounts`)     
+      .push(account);
     } catch(error) {
       console.log(error);
     }

@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
   }
 
   public save(): void {
-    let account = new Account('', this.modalForm.value.conta, null, null);
+    let account = new Account(null, this.modalForm.value.conta, null, null);
     this.firebaseService.createAccount(account)
       .then(() => {
         console.log('account created')

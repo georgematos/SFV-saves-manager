@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
   }
 
   public signup(): void {
-    let user = new User('', this.formLogin.value.email, this.formLogin.value.password, []);
+    let user = new User(null, this.formLogin.value.email, this.formLogin.value.password, []);
     this.firebaseService.signup(user).then(() => {      
       if (this.firebaseService.signUpError === undefined) {
         this.router.navigate(['/home']);
