@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row d-flex align-items-center pb-2">
     <div class="col-9">
-      {{ currentUserEmail }}
+      {{ currentUser.email }}
     </div>
     <div class="col-3 d-flex flex-column">
         <button type="submit" class="btn btn-warning" (click)="logout()">logout
@@ -19,8 +19,8 @@
         <tr scope="row">
           <th scope="col" style="vertical-align: middle;">#</th>
           <th scope="col" style="vertical-align: middle;">Steam Account</th>
-          <th scope="col" style="text-align: center;">
-            <button type="button" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal">
+          <th scope="col" style="text-align: cener;">
+            <button type="button" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#AccountModal">
               <i>
                 <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
@@ -32,10 +32,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
+        <tr *ngFor="let account of accounts; let index = index">
+          <th scope="row">{{ index }}</th>
+          <td>{{ account.username }}</td>
+          <td scope="col" style="text-align: cener;">
+            <div class="dropdown">
+              <button class="btn btn-secondary btn-circle btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#AccountModal">Modificar</button>
+                <button class="dropdown-item" type="button" (click)="deleteAccount(account)">Excluir</button>
+              </div>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -43,12 +55,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="AccountModal" tabindex="-1" aria-labelledby="AccountModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form [formGroup]="modalForm" class="formGroup" (ngSubmit)="save()">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{ "PAGES.HOME.MODAL_TITLE" | translate }}</h5>
+          <h5 class="modal-title" id="AccountModalLabel">{{ "PAGES.HOME.MODAL_TITLE" | translate }}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

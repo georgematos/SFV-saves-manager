@@ -62,8 +62,48 @@ export class FirebaseService {
 
   public createAccount(account: Account): Promise<any> {   
     try {
-      return firebase.database().ref(`user_data/${firebase.auth().currentUser.uid}`)
+      return firebase.database().ref(`user_data/${firebase.auth().currentUser.uid}/accounts`)
         .push(account);
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+   public getAccounts(user: User): Promise<any> {
+    
+    return new Promise((resolve, reject) => {
+      let accounts: Array<Account> = [];
+      firebase.database().ref(`user_data/${user.uid}/accounts`)
+        .orderByKey()
+        .once('value')
+        .then((snapshot: any) => {
+          snapshot.forEach((childOf: any) => {
+            let account: Account = childOf.val();
+            account.id = childOf.key;
+            accounts.push(account);
+          });
+          return accounts;
+        }).finally(() => {
+          resolve(accounts);
+        });
+      });
+  }
+
+  public update(account: Account): void {
+    try {
+      firebase.database()
+        .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
+        .update(account);
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  public deleteAccount(account: Account): void {
+    try {
+      firebase.database()
+        .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
+        .remove();
     } catch(error) {
       console.log(error);
     }
