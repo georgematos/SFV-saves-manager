@@ -1,6 +1,8 @@
 {
   "GLOBAL": {
-    "TITLE": "SFV Saves Manager"
+    "TITLE": "SFV Saves Manager",
+    "CLOSE": "Fechar",
+    "SAVE_CHANGES": "Salvar"
   },
   "PAGES": {
     "LOGIN": {
@@ -14,6 +16,10 @@
       "EMAIL": "Email",
       "SIGNUP": "Cadastrar",
       "GO_TO_HOME": "Login"
+    },
+    "HOME": {
+      "MODAL_TITLE": "Criar conta",
+      "ACCOUNT_NAME": "Nome da conta"
     }
   },
   "ERROR": {
