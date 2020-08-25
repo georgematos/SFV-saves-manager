@@ -37,9 +37,9 @@ export class LoginComponent implements OnInit {
       this.formLogin.value.email,
       this.formLogin.value.password
     )
-    .then(() => {
-      console.log("login success.")
+    .subscribe(() => {
       this.router.navigate(['/home']);
+      console.log("login success.")
     })
   }
 

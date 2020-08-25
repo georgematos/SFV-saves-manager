@@ -37,8 +37,8 @@ export class AccountModalComponent implements OnInit {
     // update
     if(this.modalForm.value.id) {
       let account = new Account(this.modalForm.value.id, this.modalForm.value.conta, null, null);
-      this.firebaseService.update(account)
-        .then(() => {
+      this.firebaseService.updateSteamAccount(account)
+        .subscribe(() => {
           $('.close').click(); // fecha o modal
           this.ngOnInit();
           this.accountSavedEmitter.emit(true);
@@ -46,8 +46,8 @@ export class AccountModalComponent implements OnInit {
     } else {
       // create
       let account = new Account(null, this.modalForm.value.conta, null, null);
-      this.firebaseService.createAccount(account)
-        .then(() => {
+      this.firebaseService.createSteamAccount(account)
+        .subscribe(() => {
           this.ngOnInit();
           this.accountSavedEmitter.emit(true);
         });

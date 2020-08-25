@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
-import { User } from 'app/models/user.model';
-import * as firebase from 'firebase/app';
 import { Account } from '../models/account.model';
 import { AccountModalComponent } from './account-modal/account-modal.component';
+import { User } from 'app/models/user.model';
+
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-home',
@@ -41,22 +42,31 @@ export class HomeComponent implements OnInit {
   }
 
   public fillAccounts(): void {
-    this.firebaseService.getAccounts(this.currentUser).then((resp) => this.accounts = resp);
+    this.accounts = [];
+    this.firebaseService.getSteamAccounts(this.currentUser)
+    .subscribe((snapshot: any) => {
+      snapshot.forEach((childOf: any) => {
+        let account: Account = childOf.val();
+        account.id = childOf.key;
+        this.accounts.push(account);
+      });
+    })
   }
 
-  public updateAccount(account: Account) {
-    this.firebaseService.update(account);
+  public updateSteamAccount(account: Account) {
+    this.firebaseService.updateSteamAccount(account);
     this.ngOnInit();
   }
 
   public deleteAccount(account: Account) {
-    this.firebaseService.deleteAccount(account);
-    this.ngOnInit();
+    this.firebaseService.deleteSteamAccount(account).subscribe(() => {
+      this.ngOnInit();
+    });
   }
 
   public logout(): void {
     this.firebaseService.logout()
-      .then(() => {
+      .subscribe(() => {
         this.router.navigate(['/']);
       });
   }

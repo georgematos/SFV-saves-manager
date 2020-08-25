@@ -4,7 +4,7 @@ import * as firebase from "firebase/app";
 import 'firebase/auth';
 import 'firebase/database';
 import { exit } from 'process';
-import { Observable } from "rxjs";
+import { from, Observable } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
 
@@ -19,32 +19,32 @@ export class FirebaseService {
     private router: Router
   ) { }
 
-  public async signup(user: User): Promise<any> {
+  public signup(user: User): Observable<any> {
     if (this.signUpError !== undefined) this.signUpError = undefined;
     try {
-      await firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      return from(firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
       .then((auth) => {
         delete user.password;
           firebase.database()
            .ref(`user_data/${auth.user.uid}`)
            .set(user);
-      });
+      }));
     } catch (error) {
       this.signUpError = error.message;
     }
   }
 
-  public async login(email: string, password: string): Promise<any> {
+  public login(email: string, password: string): Observable<any> {
     if (this.authError !== undefined) this.authError = undefined;
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      firebase.auth().currentUser.getIdToken()
-        .then((idToken: string) => {
-          this.token_id = idToken;
-          localStorage.setItem('idToken', idToken);
-        });
-    }
-    catch (error) {
+      return from(firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+        firebase.auth().currentUser.getIdToken()
+          .then((idToken: string) => {
+            this.token_id = idToken;
+            localStorage.setItem('idToken', idToken)
+          });
+      }));
+    } catch(error) {
       this.authError = error.message;
     }
   }
@@ -60,62 +60,54 @@ export class FirebaseService {
     return this.token_id !== undefined;
   }
 
-  public createAccount(account: Account): Promise<any> {   
+  public createSteamAccount(account: Account): Observable<any> {   
     try {
-      return firebase.database().ref(`user_data/${firebase.auth().currentUser.uid}/accounts`)     
-      .push(account);
+      return from(firebase.database()
+      .ref(`user_data/${firebase.auth().currentUser.uid}/accounts`)
+      .push(account));
     } catch(error) {
       console.log(error);
     }
   }
 
-   public getAccounts(user: User): Promise<any> {
-    
-    return new Promise((resolve, reject) => {
-      let accounts: Array<Account> = [];
-      firebase.database().ref(`user_data/${user.uid}/accounts`)
+  public getSteamAccounts(user: User): Observable<any> {
+    try {
+      return from(firebase.database()
+        .ref(`user_data/${user.uid}/accounts`)
         .orderByKey()
-        .once('value')
-        .then((snapshot: any) => {
-          snapshot.forEach((childOf: any) => {
-            let account: Account = childOf.val();
-            account.id = childOf.key;
-            accounts.push(account);
-          });
-          return accounts;
-        }).finally(() => {
-          resolve(accounts);
-        });
-      });
-  }
-
-  public update(account: Account): Promise<any> {
-    try {
-      return firebase.database()
-        .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
-        .update(account);
+        .once('value'));
     } catch(error) {
       console.log(error);
     }
   }
 
-  public deleteAccount(account: Account): void {
+  public updateSteamAccount(account: Account): Observable<any> {
     try {
-      firebase.database()
+      return from(firebase.database()
         .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
-        .remove();
+        .update(account));
     } catch(error) {
       console.log(error);
     }
   }
 
-  public async logout(): Promise<any> {
+  public deleteSteamAccount(account: Account): Observable<any> {
     try {
-      await firebase.auth().signOut()
+      return from(firebase.database()
+        .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
+        .remove());
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  public logout(): Observable<any> {
+    try {
+      return from(firebase.auth().signOut()
         .then(() => {
           localStorage.removeItem('idToken');
           this.token_id = undefined;
-        });
+        }));
     } catch (error) {
       console.log(error)
     }
