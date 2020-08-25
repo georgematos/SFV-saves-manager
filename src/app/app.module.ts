@@ -1,23 +1,20 @@
-import 'reflect-metadata';
-import '../polyfills';
-
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
-
+import { BrowserModule } from '@angular/platform-browser';
+// NG Translate
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import 'reflect-metadata';
+import '../polyfills';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TitleBarComponent } from './title-bar/title-bar.component';
-import { LoginModule } from './login/login.module';
-import { SignupModule } from './signup/signup.module';
+import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
-
-// NG Translate
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LoginModule } from './login/login.module';
+import { SharedModule } from './shared/shared.module';
+import { SignupModule } from './signup/signup.module';
+import { TitleBarComponent } from './title-bar/title-bar.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {

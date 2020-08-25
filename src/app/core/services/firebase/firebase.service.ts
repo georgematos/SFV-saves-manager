@@ -89,9 +89,9 @@ export class FirebaseService {
       });
   }
 
-  public update(account: Account): void {
+  public update(account: Account): Promise<any> {
     try {
-      firebase.database()
+      return firebase.database()
         .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
         .update(account);
     } catch(error) {

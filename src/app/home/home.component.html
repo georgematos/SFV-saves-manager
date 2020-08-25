@@ -17,10 +17,12 @@
           <th scope="col" style="vertical-align: middle;">#</th>
           <th scope="col" style="vertical-align: middle;">Steam Account</th>
           <th scope="col" style="text-align: center;">
-            <button type="button" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#AccountModal">
-              <i>
-                <span class="material-icons md-18">add</span>
-              </i>
+            <button 
+              type="button" 
+              class="btn btn-success btn-circle btn-sm" 
+              data-toggle="modal" 
+              data-target="#AccountModal">
+                <i><span class="material-icons md-18">add</span></i>
             </button>
           </th>
         </tr>
@@ -35,8 +37,20 @@
                 <span class="material-icons md-18">more_vert</span>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#AccountModal">Modificar</button>
-                <button class="dropdown-item" type="button" (click)="deleteAccount(account)">Excluir</button>
+                <button 
+                  class="dropdown-item" 
+                  type="button" 
+                  data-toggle="modal" 
+                  data-target="#AccountModal"
+                  (click)="fillModalToUpdate(account)">
+                    Modificar
+                </button>
+                <button 
+                  class="dropdown-item"
+                  type="button"
+                  (click)="deleteAccount(account)">
+                    Excluir
+                </button>
               </div>
             </div>
           </td>
@@ -46,27 +60,4 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="AccountModal" tabindex="-1" aria-labelledby="AccountModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form [formGroup]="modalForm" class="formGroup" (ngSubmit)="save()">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="AccountModalLabel">{{ "PAGES.HOME.MODAL_TITLE" | translate }}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div>
-            {{ "PAGES.HOME.ACCOUNT_NAME" | translate }}: <input type="text" formControlName="conta">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ "GLOBAL.CLOSE" | translate }}</button>
-          <button type="submit" class="btn btn-primary">{{ "GLOBAL.SAVE_CHANGES" | translate }}</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+<app-account-modal (accountSavedEmitter)="updatePage($event)"></app-account-modal>

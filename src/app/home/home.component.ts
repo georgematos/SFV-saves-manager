@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
-import * as firebase from 'firebase/app';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Account } from '../models/account.model';
 import { User } from 'app/models/user.model';
+import * as firebase from 'firebase/app';
+import { Account } from '../models/account.model';
+import { AccountModalComponent } from './account-modal/account-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -12,15 +12,16 @@ import { User } from 'app/models/user.model';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+  
   public currentUser: User = new User('', '', '', []);
-  public modalForm: FormGroup;
   public accounts: Account[] = [];
+
+  @ViewChild(AccountModalComponent)
+  public accountModal: AccountModalComponent;
 
   constructor(
     private router: Router,
     private firebaseService: FirebaseService,
-    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -33,26 +34,14 @@ export class HomeComponent implements OnInit {
         console.log('User is not logged');
       }
     })
-    this.modalForm = this.formBuilder.group({
-      conta: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(60)
-      ])]
-    })
+  }
+
+  ngAfterViewInit() {
+    console.log()
   }
 
   public fillAccounts(): void {
     this.firebaseService.getAccounts(this.currentUser).then((resp) => this.accounts = resp);
-  }
-
-  public save(): void {
-    let account = new Account(null, this.modalForm.value.conta, null, null);
-    this.firebaseService.createAccount(account)
-      .then(() => {
-        console.log('account created')
-        this.ngOnInit();
-      });
   }
 
   public updateAccount(account: Account) {
@@ -70,6 +59,17 @@ export class HomeComponent implements OnInit {
       .then(() => {
         this.router.navigate(['/']);
       });
+  }
+
+  public fillModalToUpdate(account: Account) {
+    this.accountModal.modalForm.setValue({ conta: account.username, id: account.id });
+    this.accountModal.title="update"
+  }
+
+  public updatePage(event: boolean) {
+    if(event) {
+      this.ngOnInit();
+    }
   }
 
 }

@@ -18,8 +18,11 @@
       "GO_TO_HOME": "Login"
     },
     "HOME": {
-      "MODAL_TITLE": "Criar conta",
       "ACCOUNT_NAME": "Nome da conta"
+    },
+    "MODAL": {
+      "TITLE_CREATE": "Criar conta",
+      "TITLE_UPDATE": "Atualizar conta"
     }
   },
   "ERROR": {
