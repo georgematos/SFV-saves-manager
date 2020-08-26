@@ -66,4 +66,8 @@ export class AccountModalComponent implements OnInit {
     this.ngOnInit();
   }
 
+  public showPopover(): void {
+    $('#popover').click().toggle();
+  }
+
 }

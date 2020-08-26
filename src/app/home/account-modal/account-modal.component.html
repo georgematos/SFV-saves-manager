@@ -17,7 +17,12 @@
                 {{ "PAGES.HOME.ACCOUNT_NAME" | translate }}:
               </div>
               <div class="col">
-                <input type="text" formControlName="conta" style="width: 100%;">
+                <input 
+                type="text" 
+                formControlName="conta" 
+                style="width: 100%;" 
+                placement="top"
+                ngbPopover="{{ 'PAGES.MODAL.POPOVER' | translate }}">
               </div>
             </div>
             <div class="row">

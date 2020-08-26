@@ -24,7 +24,9 @@
     },
     "MODAL": {
       "TITLE_CREATE": "Criar conta",
-      "TITLE_UPDATE": "Atualizar conta"
+      "TITLE_UPDATE": "Atualizar conta",
+      "TITLE_POPOVER": "Dica!",
+      "POPOVER": "Para uma melhor experência use mesmo nickname da sua url personalizada da Steam"
     },
     "ALERTS": {
       "WARNING": "Atenção",

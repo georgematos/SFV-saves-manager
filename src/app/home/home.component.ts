@@ -6,6 +6,8 @@ import { AccountModalComponent } from './account-modal/account-modal.component';
 import { User } from 'app/models/user.model';
 
 import * as firebase from 'firebase/app';
+import { HttpClient } from '@angular/common/http';
+import { SteamService } from 'app/core/services/steam/steam.service';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private firebaseService: FirebaseService,
+    private steamService: SteamService
   ) { }
 
   ngOnInit(): void {
@@ -91,6 +94,20 @@ export class HomeComponent implements OnInit {
     if(event) {
       this.ngOnInit();
     }
+  }
+
+  public getSteamUserData(): void {
+    const steam_id = '76561198010834612';
+    this.steamService.getSteamUserData(steam_id).subscribe((resp) => {
+      resp.response.players.forEach((p: any) => {
+        console.log(p.steamid);
+        console.log(p.personaname);
+        console.log(p.avatar);
+      })
+    });
+    this.steamService.getSteamIdByUsername('Senshi-Hiro').subscribe((resp) => {
+      console.log(resp);
+    });
   }
 
 }

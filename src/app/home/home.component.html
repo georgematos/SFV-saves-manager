@@ -64,5 +64,7 @@
   </div>
 </div>
 
+<button (click)="getSteamUserData()">steam!</button>
+
 <app-account-modal (accountSavedEmitter)="updatePage($event)"></app-account-modal>
 <app-confirmation-modal (confirmationEmitter)="confirmDeleteAccount($event)"></app-confirmation-modal>

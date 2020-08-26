@@ -2,9 +2,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-// NG Translate
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import 'reflect-metadata';
 import '../polyfills';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +12,10 @@ import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
 import { SignupModule } from './signup/signup.module';
 import { TitleBarComponent } from './title-bar/title-bar.component';
+// NG Translate
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
