@@ -2,6 +2,7 @@ body {
   background-color: aliceblue;
 }
 
+.material-icons.md-16 { font-size: 16px; }
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
@@ -12,8 +13,9 @@ body {
 
 .btn-circle.btn-sm { 
   width: 30px; 
-  height: 30px; 
-  padding: 6px 0px; 
+  height: 30px;
+  /* superior | direita | inferior | esquerda */
+  padding: 2px 0px 0px 1px; 
   border-radius: 15px; 
   font-size: 8px; 
   text-align: center; 
