@@ -19,7 +19,8 @@
       "GO_TO_HOME": "Login"
     },
     "HOME": {
-      "ACCOUNT_NAME": "Nome da conta"
+      "ACCOUNT_NAME": "Nome da conta",
+      "ACCOUNT_EMAIL": "Email da conta"
     },
     "MODAL": {
       "TITLE_CREATE": "Criar conta",

@@ -26,17 +26,25 @@ export class AccountModalComponent implements OnInit {
     this.modalForm = this.formBuilder.group({
         id: [''],
         conta: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(60)
-      ])]
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(60)
+        ])],
+        email: ['', Validators.compose([
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(60)
+        ])]
     })
   }
 
   public save(): void {
+    let id = this.modalForm.value.id;
+    let conta = this.modalForm.value.conta;
+    let email = this.modalForm.value.email;
     // update
     if(this.modalForm.value.id) {
-      let account = new Account(this.modalForm.value.id, this.modalForm.value.conta, null, null);
+      let account = new Account(id, conta, email, null, null);
       this.firebaseService.updateSteamAccount(account)
         .subscribe(() => {
           $('.close').click(); // fecha o modal
@@ -45,7 +53,7 @@ export class AccountModalComponent implements OnInit {
         });
     } else {
       // create
-      let account = new Account(null, this.modalForm.value.conta, null, null);
+      let account = new Account(null, conta, email, null, null);
       this.firebaseService.createSteamAccount(account)
         .subscribe(() => {
           this.ngOnInit();

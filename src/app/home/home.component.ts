@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit {
   }
 
   public fillModalToUpdate(account: Account) {
-    this.accountModal.modalForm.setValue({ conta: account.username, id: account.id });
+    this.accountModal.modalForm.setValue({ id: account.id, conta: account.username, email: account.email });
     this.accountModal.title="update"
   }
 

@@ -16,6 +16,7 @@
         <tr scope="row">
           <th scope="col" style="vertical-align: middle;">#</th>
           <th scope="col" style="vertical-align: middle;">Steam Account</th>
+          <th scope="col" style="vertical-align: middle;">Email</th>
           <th scope="col" style="text-align: center;">
             <button 
               type="button" 
@@ -31,6 +32,7 @@
         <tr *ngFor="let account of accounts; let index = index">
           <th scope="row">{{ index }}</th>
           <td>{{ account.username }}</td>
+          <td>{{ account.email }}</td>
           <td scope="col" style="text-align: center;">
             <div class="dropdown">
               <button class="btn btn-secondary btn-circle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
