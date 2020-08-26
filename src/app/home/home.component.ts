@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   
   public currentUser: User = new User('', '', '', []);
   public accounts: Account[] = [];
+  public accountToDelete: Account;
 
   @ViewChild(AccountModalComponent)
   public accountModal: AccountModalComponent;
@@ -58,7 +59,17 @@ export class HomeComponent implements OnInit {
     this.ngOnInit();
   }
 
-  public deleteAccount(account: Account) {
+  public setAccountToDelete(account: Account) {
+    this.accountToDelete = account;
+  }
+
+  public confirmDeleteAccount(event: boolean) {
+    if(event) {
+      this.deleteSteamAccount(this.accountToDelete);
+    }
+  }
+
+  public deleteSteamAccount(account: Account) {
     this.firebaseService.deleteSteamAccount(account).subscribe(() => {
       this.ngOnInit();
     });

@@ -2,7 +2,8 @@
   "GLOBAL": {
     "TITLE": "SFV Saves Manager",
     "CLOSE": "Fechar",
-    "SAVE_CHANGES": "Salvar"
+    "SAVE_CHANGES": "Salvar",
+    "CONFIRM": "Sim"
   },
   "PAGES": {
     "LOGIN": {
@@ -23,6 +24,10 @@
     "MODAL": {
       "TITLE_CREATE": "Criar conta",
       "TITLE_UPDATE": "Atualizar conta"
+    },
+    "ALERTS": {
+      "WARNING": "Atenção",
+      "DELETE": "Tem certeza que deseja excluir?"
     }
   },
   "ERROR": {

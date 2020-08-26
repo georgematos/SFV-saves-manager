@@ -48,7 +48,9 @@
                 <button 
                   class="dropdown-item"
                   type="button"
-                  (click)="deleteAccount(account)">
+                  data-toggle="modal"
+                  data-target="#ConfirmationModal"
+                  (click)="setAccountToDelete(account)">
                     Excluir
                 </button>
               </div>
@@ -61,3 +63,4 @@
 </div>
 
 <app-account-modal (accountSavedEmitter)="updatePage($event)"></app-account-modal>
+<app-confirmation-modal (confirmationEmitter)="confirmDeleteAccount($event)"></app-confirmation-modal>
