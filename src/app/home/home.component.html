@@ -1,7 +1,16 @@
 <div class="container">
   <div class="row d-flex align-items-center pb-2">
     <div class="col-9">
-      {{ currentUser.email }}
+      <div class="row">
+        <div class="col-4">
+          <span style="color: orangered;">SFV</span>SM Account:
+        </div>
+        <div class="col shadow d-flex justify-content-center border border-primary rounded-pill">
+          <div class="d-flex align-items-center">
+            {{ currentUser.email }}
+          </div>
+        </div> 
+      </div>
     </div>
     <div class="col-3 d-flex flex-column">
         <button type="submit" class="btn btn-warning d-flex justify-content-center" (click)="logout()">
@@ -16,7 +25,7 @@
         <tr scope="row">
           <th scope="col" style="vertical-align: middle;">#</th>
           <th scope="col" style="vertical-align: middle;">Steam Account</th>
-          <th scope="col" style="vertical-align: middle;">Email</th>
+          <th scope="col" style="vertical-align: middle;">Nickname</th>
           <th scope="col" style="text-align: center;">
             <button 
               type="button" 
@@ -29,16 +38,32 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let account of accounts; let index = index">
-          <th scope="row">{{ index }}</th>
-          <td>{{ account.username }}</td>
-          <td>{{ account.email }}</td>
+        <tr *ngFor="let account of accounts">
+          <td scope="row" style="text-align: center;">
+            <img src="{{ account.avatarUrl }}" alt="Account image">
+          </td>
+          <td>
+            <ng-template #username>
+              {{ account.username }}
+            </ng-template>
+            <ng-template #no_username>
+              {{ "PAGES.HOME.STEAM_ACCOUNT_NOT_CONFIGURED" | translate }}
+            </ng-template>
+            <div *ngIf="account.username !== 'false'; then username else no_username"></div>
+          </td>
+          <td>{{ account.nickname }}</td>
           <td scope="col" style="text-align: center;">
             <div class="dropdown">
               <button class="btn btn-secondary btn-circle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="material-icons md-16">more_vert</div>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button 
+                  class="dropdown-item" 
+                  type="button" 
+                  (click)="updateThisAccount(account)">
+                    Atualizar
+                </button>
                 <button 
                   class="dropdown-item" 
                   type="button" 
@@ -63,8 +88,6 @@
     </table>
   </div>
 </div>
-
-<button (click)="getSteamUserData()">steam!</button>
 
 <app-account-modal (accountSavedEmitter)="updatePage($event)"></app-account-modal>
 <app-confirmation-modal (confirmationEmitter)="confirmDeleteAccount($event)"></app-confirmation-modal>

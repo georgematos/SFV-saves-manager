@@ -60,7 +60,10 @@ export class FirebaseService {
     return this.token_id !== undefined;
   }
 
-  public createSteamAccount(account: Account): Observable<any> {   
+  public createSteamAccount(account: Account): Observable<any> {
+    if(account.username === undefined) {
+      account.username = 'false'
+    }
     try {
       return from(firebase.database()
       .ref(`user_data/${firebase.auth().currentUser.uid}/accounts`)
@@ -82,6 +85,9 @@ export class FirebaseService {
   }
 
   public updateSteamAccount(account: Account): Observable<any> {
+    if(account.username === undefined) {
+      account.username = 'false'
+    }
     try {
       return from(firebase.database()
         .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)

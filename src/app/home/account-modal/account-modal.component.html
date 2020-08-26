@@ -14,12 +14,12 @@
           <div class="col">
             <div class="row mb-2">
               <div class="col-4">
-                {{ "PAGES.HOME.ACCOUNT_NAME" | translate }}:
+                {{ "PAGES.HOME.ACCOUNT_NICKNAME" | translate }}:
               </div>
               <div class="col">
                 <input 
                 type="text" 
-                formControlName="conta" 
+                formControlName="nickname"
                 style="width: 100%;" 
                 placement="top"
                 ngbPopover="{{ 'PAGES.MODAL.POPOVER' | translate }}">
@@ -30,7 +30,10 @@
                 {{ "PAGES.HOME.ACCOUNT_EMAIL" | translate }}:
               </div>
               <div class="col">
-                <input type="text" formControlName="email" style="width: 100%;">
+                <input 
+                type="text"
+                formControlName="email"
+                style="width: 100%;">
               </div>
             </div>
           </div>

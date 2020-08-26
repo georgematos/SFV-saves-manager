@@ -20,7 +20,9 @@
     },
     "HOME": {
       "ACCOUNT_NAME": "Nome da conta",
-      "ACCOUNT_EMAIL": "Email da conta"
+      "ACCOUNT_EMAIL": "Email da conta",
+      "ACCOUNT_NICKNAME": "Nickname",
+      "STEAM_ACCOUNT_NOT_CONFIGURED": "Configure seu realname no seu perfil da Steam"
     },
     "MODAL": {
       "TITLE_CREATE": "Criar conta",
