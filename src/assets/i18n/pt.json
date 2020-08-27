@@ -19,14 +19,21 @@
       "GO_TO_HOME": "Login"
     },
     "HOME": {
-      "ACCOUNT_NAME": "Nome da conta",
-      "ACCOUNT_EMAIL": "Email da conta",
+      "ACCOUNT": "Conta",
+      "STEAM_ACCOUNT": "Conta Steam",
+      "NICKNAME": "Apelido do Perfil",
+      "ACCOUNT_EMAIL": "Email",
       "ACCOUNT_NICKNAME": "Nickname",
-      "STEAM_ACCOUNT_NOT_CONFIGURED": "Configure seu realname no seu perfil da Steam"
+      "STEAM_ACCOUNT_NOT_CONFIGURED": "Configure seu realname no seu perfil da Steam",
+      "ACCOUNT_USER_NOT_FOUND": "Usuario não encontrado",
+      "UPDATE": "Atualizar",
+      "MODIFY": "Modificar",
+      "DELETE": "Excluir",
+      "LOGOUT": "Sair"
     },
     "MODAL": {
       "TITLE_CREATE": "Criar conta",
-      "TITLE_UPDATE": "Atualizar conta",
+      "TITLE_UPDATE": "Alterar conta",
       "TITLE_POPOVER": "Dica!",
       "POPOVER": "Para uma melhor experência use mesmo nickname da sua url personalizada da Steam"
     },

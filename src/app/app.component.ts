@@ -27,7 +27,7 @@ export class AppComponent {
     }
 
     const firebaseConfig = {
- 
+      
     };
 
     firebase.initializeApp(firebaseConfig);

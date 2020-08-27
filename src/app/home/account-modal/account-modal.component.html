@@ -25,6 +25,9 @@
                 ngbPopover="{{ 'PAGES.MODAL.POPOVER' | translate }}">
               </div>
             </div>
+            <div *ngIf="errorMessage === 'User not found'" class="alert alert-danger">
+              {{ "PAGES.HOME.ACCOUNT_USER_NOT_FOUND" | translate }}
+            </div>
             <div class="row">
               <div class="col-4">
                 {{ "PAGES.HOME.ACCOUNT_EMAIL" | translate }}:

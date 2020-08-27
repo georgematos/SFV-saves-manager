@@ -14,8 +14,10 @@ export class AccountModalComponent implements OnInit {
 
   @Output()
   public accountSavedEmitter = new EventEmitter();
+
   public modalForm: FormGroup;
   public title: string;
+  public errorMessage: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,33 +48,33 @@ export class AccountModalComponent implements OnInit {
     
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
     .subscribe((resp: any) => {
-      console.log(resp);
-        this.steamService.getSteamUserData(resp.response.steamid)
-        .subscribe((resp) => {
-          console.log(resp)
-          resp.response.players.forEach((p: any) => {
-            // update
-            if(id) {
-              let account = new Account(id, p.steamid, nickname, p.avatar, p.realname, email, null, null);
-              this.firebaseService.updateSteamAccount(account)
-                .subscribe(() => {
-                  $('.close').click(); // fecha o modal
-                  this.ngOnInit();
-                  this.accountSavedEmitter.emit(true);
-                });
-            } else {
-              // create
-              let account = new Account(null, p.steamid, nickname, p.avatar, p.realname, email, null, null);
-              this.firebaseService.createSteamAccount(account)
-                .subscribe(() => {
-                  this.ngOnInit();
-                  this.accountSavedEmitter.emit(true);
-                });
-            }
-          });
-        })
+      this.errorMessage = '';
+      if(!resp.response.steamid) {
+        this.errorMessage = 'User not found';
+        throw('User not found');
       }
-    );
+      this.steamService.getSteamUserData(resp.response.steamid)
+      .subscribe((resp) => {
+        resp.response.players.forEach((p: any) => {
+          if(id) { // update
+            let account = new Account(id, p.steamid, nickname, p.avatar, p.realname, email, null, null);
+            this.firebaseService.updateSteamAccount(account)
+              .subscribe(() => {
+                $('.close').click(); // fecha o modal
+                this.ngOnInit();
+                this.accountSavedEmitter.emit(true);
+              });
+          } else { // create
+            let account = new Account(null, p.steamid, nickname, p.avatar, p.realname, email, null, null);
+            this.firebaseService.createSteamAccount(account)
+              .subscribe(() => {
+                this.ngOnInit();
+                this.accountSavedEmitter.emit(true);
+              });
+          }
+        });
+      })
+    });
   }
 
   public resetModal(): void {
