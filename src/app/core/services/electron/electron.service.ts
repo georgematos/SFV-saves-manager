@@ -17,6 +17,8 @@ export class ElectronService {
   childProcess: typeof childProcess;
   fs: typeof fs;
 
+  public sfvSavesPathDir: string = 'AppData/Local/StreetFighterV/Saved/SaveGames';
+
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
   }
@@ -33,12 +35,20 @@ export class ElectronService {
     }
   }
 
-  public createBackupDir(pathDir: string) {
-    if (!this.fs.existsSync(pathDir)) {
-      this.fs.mkdirSync(pathDir);
-      
+  public createBackupDir(nickname: string): void {
+    let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
+    if (!this.fs.existsSync(fullPath)) {
+      this.fs.mkdirSync(fullPath);
     } else {
       console.log('O dir já existe');
+    }
+  }
+
+  public updateBackupDirName(nickname: string, newNickname: string): void {
+    let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
+    let newFullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${newNickname}`;
+    if (this.fs.existsSync(fullPath)) {
+      this.fs.renameSync(fullPath, newFullPath);
     }
   }
 }

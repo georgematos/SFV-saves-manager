@@ -47,7 +47,7 @@ export class AccountModalComponent implements OnInit {
     let id = this.modalForm.value.id;
     let nickname = this.modalForm.value.nickname;
     let email = this.modalForm.value.email;
-    
+
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
     .subscribe((resp: any) => {
       this.errorMessage = '';
@@ -57,18 +57,20 @@ export class AccountModalComponent implements OnInit {
       }
       this.steamService.getSteamUserData(resp.response.steamid)
       .subscribe((resp) => {
+
         resp.response.players.forEach((p: any) => {
           if(id) { // update
             let account = new Account(id, p.steamid, nickname, p.avatar, p.realname, email, false, null, null);
-            this.firebaseService.createSteamAccount(account)
+            this.firebaseService.saveSteamAccount(account)
               .subscribe(() => {
+                this.updateDirName(this.modalForm.value.nickname, nickname);
                 $('.close').click(); // fecha o modal
                 this.ngOnInit();
                 this.accountSavedEmitter.emit(true);
               });
             } else { // create
               let account = new Account(null, p.steamid, nickname, p.avatar, p.realname, email, false, null, null);
-              this.firebaseService.createSteamAccount(account)
+              this.firebaseService.saveSteamAccount(account)
               .subscribe(() => {
                 this.createUserSteamBackupDir(nickname);
                 this.ngOnInit();
@@ -81,12 +83,17 @@ export class AccountModalComponent implements OnInit {
   }
 
   public createUserSteamBackupDir(nickname: string): void {
-    this.electronService.createBackupDir(`${process.env.HOME}/AppData/Local/StreetFighterV/Saved/SaveGames/${nickname}`);    
+    this.electronService.createBackupDir(nickname);
   }
 
   public uploadSaveFiles(account: Account): void {
     //this.firebaseService.uploadSaveFiles(acc)
   }
+
+  public updateDirName(nickname: string, newNickname: string) {
+    this.electronService.updateBackupDirName(nickname, newNickname);
+  }
+
 
   public resetModal(): void {
     this.ngOnInit();

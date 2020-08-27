@@ -9,32 +9,27 @@ import { User } from "../../../models/user.model";
 @Injectable()
 export class FirebaseService {
 
-  public createSteamAccount(account: Account): Observable<any> {
+  public saveSteamAccount(account: Account): Observable<any> {
     if(account.username === undefined) {
-      account.username = 'false'
+      account.username = 'false';
     }
     try {
       let uid = firebase.auth().currentUser.uid;
-      return from(this.accountExists(uid, account.steamId).then((resp: any) => {
-        if (!resp) {
-          from(firebase.database()
+      return from(this.accountExists(uid, account.steamId)
+        .then((resp: boolean) => {
+          if (!resp) {
+            firebase.database()
             .ref(`user_data/${uid}/accounts`)
-            .push(account));
-        }
-      }))
-    } catch(error) {
-      console.error(error);
-    }
-  }
-
-  public updateSteamAccount(account: Account): Observable<any> {
-    if(account.username === undefined) {
-      account.username = 'false'
-    }
-    try {
-      return from(firebase.database()
-        .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
-        .update(account));
+            .push(account);
+            console.log(resp)
+          } else if (resp && account.id) {
+            firebase.database()
+              .ref(`user_data/${uid}/accounts/${account.id}`)
+              .update(account);
+              console.log(resp)
+              console.log(account)
+          }
+        }))
     } catch(error) {
       console.error(error);
     }
@@ -61,7 +56,7 @@ export class FirebaseService {
     }
   }
 
-  public async accountExists(uid: string, steamId: string): Promise<any> {
+  public async accountExists(uid: string, steamId: string): Promise<boolean> {
     let exists: boolean;
     try {
       await firebase.database()

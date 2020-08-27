@@ -63,12 +63,12 @@ export class HomeComponent implements OnInit {
         account.username = p.realname;
         account.avatarUrl = p.avatar;
       });
-      this.firebaseService.updateSteamAccount(account);
+      this.firebaseService.saveSteamAccount(account);
     });
   }
 
   public updateSteamAccount(account: Account) {
-    this.firebaseService.updateSteamAccount(account);
+    this.firebaseService.saveSteamAccount(account);
     this.ngOnInit();
   }
 
