@@ -37,8 +37,8 @@
         >
           Login
         </button>
-        <div *ngIf="firebaseService.authError" class="alert alert-danger">
-          {{ firebaseService.authError }}
+        <div *ngIf="authService.authError" class="alert alert-danger">
+          {{ authService.authError }}
         </div>
       </form>
     </div>

@@ -6,6 +6,7 @@ import { User } from 'app/models/user.model';
 import * as firebase from 'firebase/app';
 import { Account } from '../models/account.model';
 import { AccountModalComponent } from './account-modal/account-modal.component';
+import { AuthService } from '../core/services/firebase/authservice.service'
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private firebaseService: FirebaseService,
-    private steamService: SteamService
+    private steamService: SteamService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +89,7 @@ export class HomeComponent implements OnInit {
   }
 
   public logout(): void {
-    this.firebaseService.logout()
+    this.authService.logout()
       .subscribe(() => {
         this.router.navigate(['/']);
       });

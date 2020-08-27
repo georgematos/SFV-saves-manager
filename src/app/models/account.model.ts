@@ -6,6 +6,7 @@ export class Account {
     public avatarUrl: string,
     public username: string,
     public email: string,
+    public status: boolean,
     public gameProgressSave: any,
     public gameSystemSave: any
   ) { }

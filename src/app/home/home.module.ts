@@ -10,6 +10,7 @@ import { HomeComponent } from './home.component';
 import { SteamService } from '../core/services/steam/steam.service';
 import { ConfirmationModalComponent } from 'app/confirmation-modal/confirmation-modal.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [
     AuthGuard,
-    SteamService
+    SteamService,
+    FirebaseService
   ]
 })
 export class HomeModule { }

@@ -6,7 +6,7 @@ import { SignupRoutingModule } from './signup-routing.module';
 import { SignupComponent } from './signup.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FirebaseService } from 'app/core/services/firebase/firebase.service';
+import { AuthService } from 'app/core/services/firebase/authservice.service';
 
 @NgModule({
   declarations: [SignupComponent],
@@ -17,7 +17,7 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
     ReactiveFormsModule,
   ],
   providers: [
-    FirebaseService
+    AuthService
   ]
 })
 export class SignupModule {}

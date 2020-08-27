@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'app/core/services/firebase/authservice.service';
 import { User } from 'app/models/user.model';
-import { FirebaseService } from '../core/services/firebase/firebase.service';
 import { ConfirmPasswordValidator } from '../validators/confirm-password.validator';
 
 @Component({
@@ -16,12 +16,12 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private firebaseService: FirebaseService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    if (this.firebaseService.signUpError !== undefined) this.firebaseService.signUpError = undefined;
+    if (this.authService.signUpError !== undefined) this.authService.signUpError = undefined;
     this.formLogin = this.formBuilder.group({
       email: ['', Validators.compose([
         Validators.required,
@@ -43,10 +43,14 @@ export class SignupComponent implements OnInit {
 
   public signup(): void {
     let user = new User(null, this.formLogin.value.email, this.formLogin.value.password, []);
-    this.firebaseService.signup(user).subscribe(() => {      
-      if (this.firebaseService.signUpError === undefined) {
-        this.router.navigate(['/home']);
-      }
-    });
+    this.authService.signup(user).subscribe(
+      () => {      
+        if (this.authService.signUpError === undefined) {
+          this.router.navigate(['/home']);
+        }
+      },
+      (error) => {
+        this.authService.signUpError = error.message;
+      });
   }
 }

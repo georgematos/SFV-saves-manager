@@ -4,6 +4,7 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { Account } from 'app/models/account.model';
 import * as $ from 'jquery';
 import { SteamService } from 'app/core/services/steam/steam.service';
+import { ElectronService } from 'app/core/services';
 
 @Component({
   selector: 'app-account-modal',
@@ -22,7 +23,8 @@ export class AccountModalComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
-    private steamService: SteamService
+    private steamService: SteamService,
+    private electronService: ElectronService
   ) { }
 
   ngOnInit(): void {
@@ -57,17 +59,18 @@ export class AccountModalComponent implements OnInit {
       .subscribe((resp) => {
         resp.response.players.forEach((p: any) => {
           if(id) { // update
-            let account = new Account(id, p.steamid, nickname, p.avatar, p.realname, email, null, null);
-            this.firebaseService.updateSteamAccount(account)
+            let account = new Account(id, p.steamid, nickname, p.avatar, p.realname, email, false, null, null);
+            this.firebaseService.createSteamAccount(account)
               .subscribe(() => {
                 $('.close').click(); // fecha o modal
                 this.ngOnInit();
                 this.accountSavedEmitter.emit(true);
               });
-          } else { // create
-            let account = new Account(null, p.steamid, nickname, p.avatar, p.realname, email, null, null);
-            this.firebaseService.createSteamAccount(account)
+            } else { // create
+              let account = new Account(null, p.steamid, nickname, p.avatar, p.realname, email, false, null, null);
+              this.firebaseService.createSteamAccount(account)
               .subscribe(() => {
+                this.createUserSteamBackupDir(nickname);
                 this.ngOnInit();
                 this.accountSavedEmitter.emit(true);
               });
@@ -75,6 +78,14 @@ export class AccountModalComponent implements OnInit {
         });
       })
     });
+  }
+
+  public createUserSteamBackupDir(nickname: string): void {
+    this.electronService.createBackupDir(`${process.env.HOME}/AppData/Local/StreetFighterV/Saved/SaveGames/${nickname}`);    
+  }
+
+  public uploadSaveFiles(account: Account): void {
+    //this.firebaseService.uploadSaveFiles(acc)
   }
 
   public resetModal(): void {

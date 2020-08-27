@@ -50,8 +50,8 @@
         >
           {{ "PAGES.SIGNUP.SIGNUP" | translate }}
         </button>
-        <div *ngIf="firebaseService.signUpError" class="alert alert-danger">
-          {{ firebaseService.signUpError }}
+        <div *ngIf="authService.signUpError" class="alert alert-danger">
+          {{ authService.signUpError }}
         </div>
       </form>
     </div>

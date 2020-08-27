@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'app/core/services/firebase/firebase.service';
+import { AuthService } from 'app/core/services/firebase/authservice.service';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +14,12 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private firebaseService: FirebaseService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    if (this.firebaseService.authError !== undefined) this.firebaseService.authError = undefined;
+    if (this.authService.authError !== undefined) this.authService.authError = undefined;
     this.formLogin = this.formBuilder.group({
       email: ['', Validators.compose([
         Validators.required,
@@ -33,14 +33,19 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    this.firebaseService.login(
+    this.authService.login(
       this.formLogin.value.email,
       this.formLogin.value.password
     )
-    .subscribe(() => {
-      this.router.navigate(['/home']);
-      console.log("login success.")
-    })
+    .subscribe(
+      () => {
+        this.router.navigate(['/home']);
+        console.log("login success.")
+      },
+      (error) => {
+        this.authService.authError = error.message;
+      }
+    )
   }
 
 }
