@@ -1,10 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ElectronService } from 'app/core/services';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
+import { SteamService } from 'app/core/services/steam/steam.service';
 import { Account } from 'app/models/account.model';
 import * as $ from 'jquery';
-import { SteamService } from 'app/core/services/steam/steam.service';
-import { ElectronService } from 'app/core/services';
 
 @Component({
   selector: 'app-account-modal',
@@ -44,23 +44,26 @@ export class AccountModalComponent implements OnInit {
   }
 
   public save(): void {
+
     let id = this.modalForm.value.id;
     let nickname = this.modalForm.value.nickname;
     let email = this.modalForm.value.email;
+    let gameSystemSave = this.electronService.getBlob('GameSystemSave.sav');
+    let gameProgressSave = this.electronService.getBlob('GameProgressSave.sav');
 
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
-    .subscribe((resp: any) => {
+    .subscribe((respFromSteam: any) => {
       this.errorMessage = '';
-      if(!resp.response.steamid) {
+      if(!respFromSteam.response.steamid) {
         this.errorMessage = 'User not found';
         throw('User not found');
       }
-      this.steamService.getSteamUserData(resp.response.steamid)
+      this.steamService.getSteamUserData(respFromSteam.response.steamid)
       .subscribe((resp) => {
-
         resp.response.players.forEach((p: any) => {
           if(id) { // update
-            let account = new Account(id, p.steamid, nickname, p.avatar, p.realname, email, false, null, null);
+            console.log(p)
+            let account = new Account(id, false, p.steamid, nickname, p.avatar, p.realname, email, null, null);
             this.firebaseService.saveSteamAccount(account)
               .subscribe(() => {
                 this.updateDirName(this.modalForm.value.nickname, nickname);
@@ -69,9 +72,9 @@ export class AccountModalComponent implements OnInit {
                 this.accountSavedEmitter.emit(true);
               });
             } else { // create
-              let account = new Account(null, p.steamid, nickname, p.avatar, p.realname, email, false, null, null);
+              let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email, null, null);
               this.firebaseService.saveSteamAccount(account)
-              .subscribe(() => {
+              .subscribe((resp) => {
                 this.createUserSteamBackupDir(nickname);
                 this.ngOnInit();
                 this.accountSavedEmitter.emit(true);
@@ -86,14 +89,14 @@ export class AccountModalComponent implements OnInit {
     this.electronService.createBackupDir(nickname);
   }
 
-  public uploadSaveFiles(account: Account): void {
-    //this.firebaseService.uploadSaveFiles(acc)
-  }
-
   public updateDirName(nickname: string, newNickname: string) {
     this.electronService.updateBackupDirName(nickname, newNickname);
   }
 
+  public readFiles() {
+    //let gameSystem = new File([''], `${fullPath}/GameSystemSave.sav`, {});
+    
+  }
 
   public resetModal(): void {
     this.ngOnInit();

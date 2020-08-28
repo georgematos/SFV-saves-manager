@@ -58,10 +58,10 @@ export class HomeComponent implements OnInit {
   }
 
   public updateThisAccount(account: Account): void {
-    this.steamService.getSteamUserData(account.steamId).subscribe((resp) => {
+    this.steamService.getSteamUserData(account.data.steamId).subscribe((resp) => {
       resp.response.players.forEach((p: any) => {
-        account.username = p.realname;
-        account.avatarUrl = p.avatar;
+        account.data.username = p.realname;
+        account.data.avatarUrl = p.avatar;
       });
       this.firebaseService.saveSteamAccount(account);
     });
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
   }
 
   public fillModalToUpdate(account: Account) {
-    this.accountModal.modalForm.setValue({ id: account.id, nickname: account.nickname, email: account.email });
+    this.accountModal.modalForm.setValue({ id: account.id, nickname: account.data.nickname, email: account.data.email });
     this.accountModal.title="update"
   }
 

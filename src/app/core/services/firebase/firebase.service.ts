@@ -10,24 +10,23 @@ import { User } from "../../../models/user.model";
 export class FirebaseService {
 
   public saveSteamAccount(account: Account): Observable<any> {
-    if(account.username === undefined) {
-      account.username = 'false';
+    if(account.data.username === undefined) {
+      account.data.username = 'false';
     }
     try {
       let uid = firebase.auth().currentUser.uid;
-      return from(this.accountExists(uid, account.steamId)
+      return from(this.accountExists(uid, account.data.steamId)
         .then((resp: boolean) => {
-          if (!resp) {
+          if (!resp) { // create
+            console.log('nao existe', account.data.steamId)
             firebase.database()
             .ref(`user_data/${uid}/accounts`)
             .push(account);
-            console.log(resp)
-          } else if (resp && account.id) {
+          } else if (resp && account.id) { // update
+            console.log('existe', account.data.steamId)
             firebase.database()
               .ref(`user_data/${uid}/accounts/${account.id}`)
               .update(account);
-              console.log(resp)
-              console.log(account)
           }
         }))
     } catch(error) {
@@ -61,10 +60,13 @@ export class FirebaseService {
     try {
       await firebase.database()
         .ref(`user_data/${uid}/accounts`)
-        .orderByChild('steamId')
-        .equalTo(steamId)
+        //.orderByChild('steamId')
+        //.equalTo(steamId)
         .once("value", (snapshot) => {
-          exists = snapshot.val() ? true : false;
+          snapshot.forEach((childKey) => {
+            console.log(childKey.val().data)
+            exists = childKey.val().data.steamId === steamId ? true : false
+          })
         })
       return exists;
     } catch (error) {
