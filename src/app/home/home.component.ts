@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
     this.firebaseService.getSteamAccounts(this.currentUser)
     .subscribe((snapshot: any) => {
       snapshot.forEach((childOf: any) => {
+        console.log(childOf.val())
         let account: Account = childOf.val();
         account.id = childOf.key;
         this.accounts.push(account);
@@ -63,12 +64,12 @@ export class HomeComponent implements OnInit {
         account.data.username = p.realname;
         account.data.avatarUrl = p.avatar;
       });
-      this.firebaseService.saveSteamAccount(account);
+      this.firebaseService.saveSteamAccount(account, null);
     });
   }
 
   public updateSteamAccount(account: Account) {
-    this.firebaseService.saveSteamAccount(account);
+    this.firebaseService.saveSteamAccount(account, null);
     this.ngOnInit();
   }
 

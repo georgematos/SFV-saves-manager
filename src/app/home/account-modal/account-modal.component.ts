@@ -5,6 +5,7 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { Account } from 'app/models/account.model';
 import * as $ from 'jquery';
+import { SaveDocument } from 'app/models/save-document.model';
 
 @Component({
   selector: 'app-account-modal',
@@ -50,6 +51,7 @@ export class AccountModalComponent implements OnInit {
     let email = this.modalForm.value.email;
     let gameSystemSave = this.electronService.getBlob('GameSystemSave.sav');
     let gameProgressSave = this.electronService.getBlob('GameProgressSave.sav');
+    let saveDocument = new SaveDocument(gameProgressSave, gameSystemSave);
 
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
     .subscribe((respFromSteam: any) => {
@@ -63,8 +65,8 @@ export class AccountModalComponent implements OnInit {
         resp.response.players.forEach((p: any) => {
           if(id) { // update
             console.log(p)
-            let account = new Account(id, false, p.steamid, nickname, p.avatar, p.realname, email, null, null);
-            this.firebaseService.saveSteamAccount(account)
+            let account = new Account(id, false, p.steamid, nickname, p.avatar, p.realname, email);
+            this.firebaseService.saveSteamAccount(account, null)
               .subscribe(() => {
                 this.updateDirName(this.modalForm.value.nickname, nickname);
                 $('.close').click(); // fecha o modal
@@ -72,8 +74,8 @@ export class AccountModalComponent implements OnInit {
                 this.accountSavedEmitter.emit(true);
               });
             } else { // create
-              let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email, null, null);
-              this.firebaseService.saveSteamAccount(account)
+              let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email);
+              this.firebaseService.saveSteamAccount(account, saveDocument)
               .subscribe((resp) => {
                 this.createUserSteamBackupDir(nickname);
                 this.ngOnInit();
@@ -91,11 +93,6 @@ export class AccountModalComponent implements OnInit {
 
   public updateDirName(nickname: string, newNickname: string) {
     this.electronService.updateBackupDirName(nickname, newNickname);
-  }
-
-  public readFiles() {
-    //let gameSystem = new File([''], `${fullPath}/GameSystemSave.sav`, {});
-    
   }
 
   public resetModal(): void {
