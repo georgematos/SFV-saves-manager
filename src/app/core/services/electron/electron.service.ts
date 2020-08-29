@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as childProcess from 'child_process';
 // If you import a module but never use any of the imported values other than as TypeScript types,
 // the resulting javascript file will look as if you never imported the module at all.
-import { ipcRenderer, remote, webFrame } from 'electron';
+import { ipcRenderer, remote, webFrame, shell } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -14,6 +14,7 @@ export class ElectronService {
   webFrame: typeof webFrame;
   remote: typeof remote;
   childProcess: typeof childProcess;
+  shell: typeof shell;
   fs: typeof fs;
   path: typeof path;
 
@@ -29,8 +30,8 @@ export class ElectronService {
       this.ipcRenderer = window.require('electron').ipcRenderer;
       this.webFrame = window.require('electron').webFrame;
       this.remote = window.require('electron').remote;
-
       this.childProcess = window.require('child_process');
+      this.shell = window.require('electron').shell;
       this.fs = window.require('fs');
       this.path = window.require('path');
     }
@@ -57,5 +58,9 @@ export class ElectronService {
     let filePath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
     const file = this.fs.readFileSync(`${filePath}/${filename}`);
     return new Blob([file.buffer]);
+  }
+
+  public openLinkExternal(link: string) {
+    this.shell.openExternal(link);
   }
 }

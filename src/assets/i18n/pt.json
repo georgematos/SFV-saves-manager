@@ -25,6 +25,7 @@
       "ACCOUNT_EMAIL": "Email",
       "ACCOUNT_NICKNAME": "Nickname",
       "STEAM_ACCOUNT_NOT_CONFIGURED": "Configure seu realname no seu perfil da Steam",
+      "STEAM_ACCOUNT_ALREADY_EXISTS": "Esta conta já existe, tente outra",
       "ACCOUNT_USER_NOT_FOUND": "Usuario não encontrado",
       "UPDATE": "Atualizar",
       "MODIFY": "Modificar",
@@ -35,7 +36,8 @@
       "TITLE_CREATE": "Criar conta",
       "TITLE_UPDATE": "Alterar conta",
       "TITLE_POPOVER": "Dica!",
-      "POPOVER": "Para uma melhor experência use mesmo nickname da sua url personalizada da Steam"
+      "POPOVER": "Use o mesmo nickname da sua URL personalizada da Steam.",
+      "CLICK_HERE_TO_CONFIGURE": "Clique aqui para configurar"
     },
     "ALERTS": {
       "WARNING": "Atenção",

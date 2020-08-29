@@ -6,37 +6,38 @@ import 'firebase/storage'
 import { from, Observable } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
-import { SaveDocument } from "app/models/save-document.model";
 
 @Injectable()
 export class FirebaseService {
 
   public saveSteamAccount(
-    account: Account, gameProgressSave: Blob,
+    account: Account,
+    gameProgressSave: Blob,
     gameSystemSave: Blob
-    ): Observable<any> {
-      if(account.data.username === undefined) {
-        account.data.username = 'false';
-      }
-      try {
-        let uid = firebase.auth().currentUser.uid;
-        return from(firebase.database().ref(`user_data/${uid}/accounts`)
-                .push(account, () => {
-                  console.log('Conta criada');
-                  // salva os saves no storage
-                  // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gameprogress`)
-                  //   .put(saveDocument.gameProgressSave);
-                  // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gamesystem`)
-                  //   .put(saveDocument.gameSystemSave);
-                }))
-      } catch(error) {
-        console.error(error);
-      }
+  ): Observable<any> {
+    let uid = firebase.auth().currentUser.uid;
+    return from(this.accountExists(uid, account.data.steamId).then(
+      (accoutExist) => {
+        if(!accoutExist) {
+          account.data.username === undefined ? account.data.username = 'false' : '';
+            (firebase.database().ref(`user_data/${uid}/accounts`)
+            .push(account, () => {
+              console.log('Conta criada');
+              // salva os saves no storage
+              // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gameprogress`)
+              //   .put(saveDocument.gameProgressSave);
+              // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gamesystem`)
+              //   .put(saveDocument.gameSystemSave);
+            }))
+        } else {
+          throw ('This account already exists, try another');
+        }
+      }));
   }
 
   public updateSteamAccount(account: Account): Observable<any> {
+    let uid = firebase.auth().currentUser.uid;
     try {
-      let uid = firebase.auth().currentUser.uid;
       return from(firebase.database()
       .ref(`user_data/${uid}/accounts/${account.id}`)
       .update(account));
@@ -73,11 +74,10 @@ export class FirebaseService {
         .ref(`user_data/${uid}/accounts`)
         .once("value", (snapshot) => {
           snapshot.forEach((childKey) => {
-            console.log(childKey.val().data)
             exists = childKey.val().data.steamId === steamId ? true : false
           })
         })
-      return exists;
+        return exists;
     } catch (error) {
       console.error(error);
     }

@@ -31,7 +31,7 @@ export class AccountModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = "create";
-    console.log(this.selectedAccount)
+    this.errorMessage = "";
     this.modalForm = this.formBuilder.group({
         id: [''],
         nickname: ['', Validators.compose([
@@ -47,7 +47,6 @@ export class AccountModalComponent implements OnInit {
   }
 
   public save(): void {
-
     if(this.modalForm.value.id) {
       this.UpdateAccount(this.selectedAccount);
     } else {
@@ -72,12 +71,17 @@ export class AccountModalComponent implements OnInit {
       .subscribe((resp) => {
         resp.response.players.forEach((p: any) => {
           let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email);
-          this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
-          .subscribe((resp) => {
-            this.createUserSteamBackupDir(nickname);
-            this.ngOnInit();
-            this.accountSavedEmitter.emit(true);
-          });
+            this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
+            .subscribe(
+              () => {
+                this.createUserSteamBackupDir(nickname);
+                this.ngOnInit();
+                this.accountSavedEmitter.emit(true);
+              }, 
+              (error) => {
+                this.errorMessage = error;
+              }
+            );
         });
       })
     });
@@ -107,8 +111,8 @@ export class AccountModalComponent implements OnInit {
     this.ngOnInit();
   }
 
-  public showPopover(): void {
-    $('#popover').click().toggle();
+  public openInBrowser(link: string): void {
+    this.electronService.openLinkExternal(link)
   }
-
 }
+

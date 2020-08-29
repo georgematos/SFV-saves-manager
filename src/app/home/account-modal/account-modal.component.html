@@ -17,16 +17,24 @@
                 {{ "PAGES.HOME.ACCOUNT_NICKNAME" | translate }}:
               </div>
               <div class="col">
-                <input 
+                <input
+                id="nicknameInput"
                 type="text" 
                 formControlName="nickname"
-                style="width: 100%;" 
+                style="width: 100%;"
                 placement="top"
-                ngbPopover="{{ 'PAGES.MODAL.POPOVER' | translate }}">
+                [ngbPopover]="popoverContent">
+                <ng-template #popoverContent>
+                  {{ 'PAGES.MODAL.POPOVER' | translate }}
+                  <a class="a-fake" (click)="openInBrowser('http://steamcommunity.com/my/edit/')">{{ 'PAGES.MODAL.CLICK_HERE_TO_CONFIGURE' | translate }}</a>
+                </ng-template>
               </div>
             </div>
             <div *ngIf="errorMessage === 'User not found'" class="alert alert-danger">
               {{ "PAGES.HOME.ACCOUNT_USER_NOT_FOUND" | translate }}
+            </div>
+            <div *ngIf="errorMessage === 'This account already exists, try another'" class="alert alert-danger">
+              {{ "PAGES.HOME.STEAM_ACCOUNT_ALREADY_EXISTS" | translate }}
             </div>
             <div class="row">
               <div class="col-4">
