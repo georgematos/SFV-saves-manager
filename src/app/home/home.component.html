@@ -54,7 +54,7 @@
             <ng-template #no_username>
               {{ "PAGES.HOME.STEAM_ACCOUNT_NOT_CONFIGURED" | translate }}
             </ng-template>
-            <div *ngIf="account.username !== 'false'; then username else no_username"></div>
+            <div *ngIf="account.data.username !== 'false'; then username else no_username"></div>
           </td>
           <td>{{ account.data.nickname }}</td>
           <td scope="col" style="text-align: center;">
