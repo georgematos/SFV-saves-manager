@@ -5,7 +5,6 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { Account } from 'app/models/account.model';
 import * as $ from 'jquery';
-import { SaveDocument } from 'app/models/save-document.model';
 
 @Component({
   selector: 'app-account-modal',
@@ -18,8 +17,10 @@ export class AccountModalComponent implements OnInit {
   public accountSavedEmitter = new EventEmitter();
 
   public modalForm: FormGroup;
-  public title: string;
   public errorMessage: string;
+  
+  public title: string;
+  public selectedAccount: Account;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,6 +31,7 @@ export class AccountModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = "create";
+    console.log(this.selectedAccount)
     this.modalForm = this.formBuilder.group({
         id: [''],
         nickname: ['', Validators.compose([
@@ -46,12 +48,18 @@ export class AccountModalComponent implements OnInit {
 
   public save(): void {
 
-    let id = this.modalForm.value.id;
+    if(this.modalForm.value.id) {
+      this.UpdateAccount(this.selectedAccount);
+    } else {
+      this.createAccount();
+    }
+  }
+
+  public createAccount(): void {
     let nickname = this.modalForm.value.nickname;
     let email = this.modalForm.value.email;
     let gameSystemSave = this.electronService.getBlob('GameSystemSave.sav');
     let gameProgressSave = this.electronService.getBlob('GameProgressSave.sav');
-    let saveDocument = new SaveDocument(gameProgressSave, gameSystemSave);
 
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
     .subscribe((respFromSteam: any) => {
@@ -63,35 +71,35 @@ export class AccountModalComponent implements OnInit {
       this.steamService.getSteamUserData(respFromSteam.response.steamid)
       .subscribe((resp) => {
         resp.response.players.forEach((p: any) => {
-          if(id) { // update
-            console.log(p)
-            let account = new Account(id, false, p.steamid, nickname, p.avatar, p.realname, email);
-            this.firebaseService.saveSteamAccount(account, null)
-              .subscribe(() => {
-                this.updateDirName(this.modalForm.value.nickname, nickname);
-                $('.close').click(); // fecha o modal
-                this.ngOnInit();
-                this.accountSavedEmitter.emit(true);
-              });
-            } else { // create
-              let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email);
-              this.firebaseService.saveSteamAccount(account, saveDocument)
-              .subscribe((resp) => {
-                this.createUserSteamBackupDir(nickname);
-                this.ngOnInit();
-                this.accountSavedEmitter.emit(true);
-              });
-          }
+          let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email);
+          this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
+          .subscribe((resp) => {
+            this.createUserSteamBackupDir(nickname);
+            this.ngOnInit();
+            this.accountSavedEmitter.emit(true);
+          });
         });
       })
     });
+  }
+
+  public UpdateAccount(account: Account): void {
+      this.selectedAccount.data.nickname = this.modalForm.value.nickname;
+      this.selectedAccount.data.email = this.modalForm.value.email;
+      this.firebaseService.updateSteamAccount(account)
+        .subscribe(() => {
+          this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.data.nickname);
+          $('.close').click(); // fecha o modal
+          this.ngOnInit();
+          this.accountSavedEmitter.emit(true);
+        });
   }
 
   public createUserSteamBackupDir(nickname: string): void {
     this.electronService.createBackupDir(nickname);
   }
 
-  public updateDirName(nickname: string, newNickname: string) {
+  public updateUserSteamBackupDir(nickname: string, newNickname: string): void {
     this.electronService.updateBackupDirName(nickname, newNickname);
   }
 

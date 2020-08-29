@@ -64,12 +64,12 @@ export class HomeComponent implements OnInit {
         account.data.username = p.realname;
         account.data.avatarUrl = p.avatar;
       });
-      this.firebaseService.saveSteamAccount(account, null);
+      this.firebaseService.updateSteamAccount(account);
     });
   }
 
   public updateSteamAccount(account: Account) {
-    this.firebaseService.saveSteamAccount(account, null);
+    this.firebaseService.updateSteamAccount(account);
     this.ngOnInit();
   }
 
@@ -98,6 +98,7 @@ export class HomeComponent implements OnInit {
 
   public fillModalToUpdate(account: Account) {
     this.accountModal.modalForm.setValue({ id: account.id, nickname: account.data.nickname, email: account.data.email });
+    this.accountModal.selectedAccount = account;
     this.accountModal.title="update"
   }
 

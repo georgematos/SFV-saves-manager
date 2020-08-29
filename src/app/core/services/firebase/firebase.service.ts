@@ -11,31 +11,37 @@ import { SaveDocument } from "app/models/save-document.model";
 @Injectable()
 export class FirebaseService {
 
-  public saveSteamAccount(account: Account, saveDocument: SaveDocument): Observable<any> {
-    if(account.data.username === undefined) {
-      account.data.username = 'false';
-    }
+  public saveSteamAccount(
+    account: Account, gameProgressSave: Blob,
+    gameSystemSave: Blob
+    ): Observable<any> {
+      if(account.data.username === undefined) {
+        account.data.username = 'false';
+      }
+      try {
+        let uid = firebase.auth().currentUser.uid;
+        return from(firebase.database().ref(`user_data/${uid}/accounts`)
+                .push(account, () => {
+                  console.log('Conta criada');
+                  // salva os saves no storage
+                  // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gameprogress`)
+                  //   .put(saveDocument.gameProgressSave);
+                  // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gamesystem`)
+                  //   .put(saveDocument.gameSystemSave);
+                }))
+      } catch(error) {
+        console.error(error);
+      }
+  }
+
+  public updateSteamAccount(account: Account): Observable<any> {
     try {
       let uid = firebase.auth().currentUser.uid;
-      console.log(saveDocument)
-      return from(this.accountExists(uid, account.data.steamId)
-        .then((resp: boolean) => {
-          if (!resp) { // create
-            firebase.database().ref(`user_data/${uid}/accounts`)
-              .push(account, () => {
-                firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gameprogress`)
-                  .put(saveDocument.gameProgressSave);
-                firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gamesystem`)
-                  .put(saveDocument.gameSystemSave);
-              });
-          } else if (resp && account.id) { // update
-            firebase.database()
-              .ref(`user_data/${uid}/accounts/${account.id}`)
-              .update(account);
-          }
-        }))
-    } catch(error) {
-      console.error(error);
+      return from(firebase.database()
+      .ref(`user_data/${uid}/accounts/${account.id}`)
+      .update(account));
+    } catch (error) {
+      console.log(error);
     }
   }
 
