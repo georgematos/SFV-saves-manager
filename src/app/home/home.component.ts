@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit {
     this.firebaseService.getSteamAccounts(this.currentUser)
     .subscribe((snapshot: any) => {
       snapshot.forEach((childOf: any) => {
-        console.log(childOf.val())
         let account: Account = childOf.val();
         account.id = childOf.key;
         this.accounts.push(account);
@@ -109,3 +108,9 @@ export class HomeComponent implements OnInit {
   }
 
 }
+
+$(document).ready(() => {
+  $('#AccountModal').on('shown.bs.modal', () => {
+    $('#nicknameInput').trigger('focus').trigger('click');
+  })
+})
