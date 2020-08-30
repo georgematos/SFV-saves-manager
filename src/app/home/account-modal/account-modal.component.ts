@@ -57,8 +57,8 @@ export class AccountModalComponent implements OnInit {
   public createAccount(): void {
     let nickname = this.modalForm.value.nickname;
     let email = this.modalForm.value.email;
-    let gameSystemSave = this.electronService.getBlob('GameSystemSave.sav');
-    let gameProgressSave = this.electronService.getBlob('GameProgressSave.sav');
+    let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
+    let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
 
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
     .subscribe((respFromSteam: any) => {
@@ -74,7 +74,7 @@ export class AccountModalComponent implements OnInit {
             this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
             .subscribe(
               () => {
-                this.createUserSteamBackupDir(nickname);
+                // this.createUserSteamBackupDir(nickname);
                 this.ngOnInit();
                 this.accountSavedEmitter.emit(true);
               }, 
@@ -92,19 +92,11 @@ export class AccountModalComponent implements OnInit {
       this.selectedAccount.email = this.modalForm.value.email;
       this.firebaseService.updateSteamAccount(account)
         .subscribe(() => {
-          this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.nickname);
+          // this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.nickname);
           $('.close').click(); // fecha o modal
           this.ngOnInit();
           this.accountSavedEmitter.emit(true);
         });
-  }
-
-  public createUserSteamBackupDir(nickname: string): void {
-    this.electronService.createBackupDir(nickname);
-  }
-
-  public updateUserSteamBackupDir(nickname: string, newNickname: string): void {
-    this.electronService.updateBackupDirName(nickname, newNickname);
   }
 
   public resetModal(): void {
@@ -114,5 +106,13 @@ export class AccountModalComponent implements OnInit {
   public openInBrowser(link: string): void {
     this.electronService.openLinkExternal(link)
   }
+
+  // public createUserSteamBackupDir(nickname: string): void {
+  //   this.electronService.createBackupDir(nickname);
+  // }
+
+  // public updateUserSteamBackupDir(nickname: string, newNickname: string): void {
+  //   this.electronService.updateBackupDirName(nickname, newNickname);
+  // }
 }
 

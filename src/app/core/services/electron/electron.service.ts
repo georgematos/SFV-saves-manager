@@ -37,24 +37,7 @@ export class ElectronService {
     }
   }
 
-  public createBackupDir(nickname: string): void {
-    let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
-    if (!this.fs.existsSync(fullPath)) {
-      this.fs.mkdirSync(fullPath);
-    } else {
-      console.log('O dir já existe');
-    }
-  }
-
-  public updateBackupDirName(nickname: string, newNickname: string): void {
-    let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
-    let newFullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${newNickname}`;
-    if (this.fs.existsSync(fullPath)) {
-      this.fs.renameSync(fullPath, newFullPath);
-    }
-  }
-
-  public getBlob(filename: string): Blob {
+  public convertFileToBlob(filename: string): Blob {
     let filePath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
     const file = this.fs.readFileSync(`${filePath}/${filename}`);
     return new Blob([file.buffer]);
@@ -63,4 +46,21 @@ export class ElectronService {
   public openLinkExternal(link: string) {
     this.shell.openExternal(link);
   }
+
+  // public createBackupDir(nickname: string): void {
+  //   let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
+  //   if (!this.fs.existsSync(fullPath)) {
+  //     this.fs.mkdirSync(fullPath);
+  //   } else {
+  //     console.log('O dir já existe');
+  //   }
+  // }
+
+  // public updateBackupDirName(nickname: string, newNickname: string): void {
+  //   let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
+  //   let newFullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${newNickname}`;
+  //   if (this.fs.existsSync(fullPath)) {
+  //     this.fs.renameSync(fullPath, newFullPath);
+  //   }
+  // }
 }
