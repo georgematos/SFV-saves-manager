@@ -45,18 +45,18 @@
       <tbody>
         <tr *ngFor="let account of accounts">
           <td scope="row" style="text-align: center;">
-            <img src="{{ account.data.avatarUrl }}" alt="Account image">
+            <img src="{{ account.avatarUrl }}" alt="Account image">
           </td>
           <td>
             <ng-template #username>
-              {{ account.data.username }}
+              {{ account.username }}
             </ng-template>
             <ng-template #no_username>
               {{ "PAGES.HOME.STEAM_ACCOUNT_NOT_CONFIGURED" | translate }}
             </ng-template>
-            <div *ngIf="account.data.username !== 'false'; then username else no_username"></div>
+            <div *ngIf="account.username !== 'false'; then username else no_username"></div>
           </td>
-          <td>{{ account.data.nickname }}</td>
+          <td>{{ account.nickname }}</td>
           <td scope="col" style="text-align: center;">
             <div class="dropdown">
               <button class="btn btn-secondary btn-circle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

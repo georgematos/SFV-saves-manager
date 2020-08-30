@@ -88,11 +88,11 @@ export class AccountModalComponent implements OnInit {
   }
 
   public UpdateAccount(account: Account): void {
-      this.selectedAccount.data.nickname = this.modalForm.value.nickname;
-      this.selectedAccount.data.email = this.modalForm.value.email;
+      this.selectedAccount.nickname = this.modalForm.value.nickname;
+      this.selectedAccount.email = this.modalForm.value.email;
       this.firebaseService.updateSteamAccount(account)
         .subscribe(() => {
-          this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.data.nickname);
+          this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.nickname);
           $('.close').click(); // fecha o modal
           this.ngOnInit();
           this.accountSavedEmitter.emit(true);

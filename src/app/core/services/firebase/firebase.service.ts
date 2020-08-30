@@ -16,23 +16,27 @@ export class FirebaseService {
     gameSystemSave: Blob
   ): Observable<any> {
     let uid = firebase.auth().currentUser.uid;
-    return from(this.accountExists(uid, account.data.steamId).then(
+    return from(this.accountExists(uid, account.steamId).then(
       (accoutExist) => {
         if(!accoutExist) {
-          account.data.username === undefined ? account.data.username = 'false' : '';
+          account.nickname === undefined ? account.nickname = 'false' : '';
             (firebase.database().ref(`user_data/${uid}/accounts`)
             .push(account, () => {
               console.log('Conta criada');
               // salva os saves no storage
-              // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gameprogress`)
-              //   .put(saveDocument.gameProgressSave);
-              // firebase.storage().ref(`user_data/${uid}/accounts/${account.data.steamId}/gamesystem`)
-              //   .put(saveDocument.gameSystemSave);
+              this.uploadSavesToStorage();
             }))
         } else {
           throw ('This account already exists, try another');
         }
       }));
+  }
+
+  uploadSavesToStorage() {
+    // firebase.storage().ref(`user_data/${uid}/accounts/${account.steamId}/gameprogress`)
+    //   .put(gameProgressSave);
+    // firebase.storage().ref(`user_data/${uid}/accounts/${account.steamId}/gamesystem`)
+    //   .put(gameSystemSave);
   }
 
   public updateSteamAccount(account: Account): Observable<any> {
@@ -74,7 +78,7 @@ export class FirebaseService {
         .ref(`user_data/${uid}/accounts`)
         .once("value", (snapshot) => {
           snapshot.forEach((childKey) => {
-            exists = childKey.val().data.steamId === steamId ? true : false
+            exists = childKey.val().steamId === steamId ? true : false
           })
         })
         return exists;
