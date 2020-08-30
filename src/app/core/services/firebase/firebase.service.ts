@@ -17,14 +17,15 @@ export class FirebaseService {
   ): Observable<any> {
     let uid = firebase.auth().currentUser.uid;
     return from(this.accountExists(uid, account.steamId).then(
-      (accoutExist) => {
-        if(!accoutExist) {
-          account.nickname === undefined ? account.nickname = 'false' : '';
+      (accountExists) => {
+        if(!accountExists) {
+          account.username === undefined ? account.username = 'false' : '';
+          console.log(account);
             (firebase.database().ref(`user_data/${uid}/accounts`)
             .push(account, () => {
               console.log('Conta criada');
               // salva os saves no storage
-              this.uploadSavesToStorage();
+              this.uploadSavesToStorage(uid, account.steamId, gameProgressSave, gameSystemSave);
             }))
         } else {
           throw ('This account already exists, try another');
@@ -32,11 +33,11 @@ export class FirebaseService {
       }));
   }
 
-  uploadSavesToStorage() {
-    // firebase.storage().ref(`user_data/${uid}/accounts/${account.steamId}/gameprogress`)
-    //   .put(gameProgressSave);
-    // firebase.storage().ref(`user_data/${uid}/accounts/${account.steamId}/gamesystem`)
-    //   .put(gameSystemSave);
+  uploadSavesToStorage(uid: string, steamId: string, gameProgressSave: Blob, gameSystemSave: Blob) {
+    firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gameprogress`)
+      .put(gameProgressSave);
+    firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gamesystem`)
+      .put(gameSystemSave);
   }
 
   public updateSteamAccount(account: Account): Observable<any> {
@@ -74,14 +75,14 @@ export class FirebaseService {
   public async accountExists(uid: string, steamId: string): Promise<boolean> {
     let exists: boolean;
     try {
-      await firebase.database()
+        await firebase.database()
         .ref(`user_data/${uid}/accounts`)
-        .once("value", (snapshot) => {
-          snapshot.forEach((childKey) => {
-            exists = childKey.val().steamId === steamId ? true : false
-          })
-        })
-        return exists;
+        .orderByChild('steamId')
+        .equalTo(steamId)
+        .once("value", (snap) => {
+          exists = snap.val() ? true : false;
+        });
+      return exists;
     } catch (error) {
       console.error(error);
     }
