@@ -24,7 +24,7 @@
     <table class="table">
       <thead class="thead-dark">
         <tr scope="row">
-          <th scope="col" style="vertical-align: middle;"></th>
+          <th scope="col"></th>
           <th scope="col" style="vertical-align: middle;">
             {{ "PAGES.HOME.STEAM_ACCOUNT" | translate }}
           </th>
@@ -43,9 +43,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let account of accounts">
+        <tr *ngFor="let account of accounts; let i = index">
           <td scope="row" style="text-align: center;">
-            <img src="{{ account.avatarUrl }}" alt="Account image">
+            <img class="border-circle" [ngClass]="{selected:account.status}" src="{{ account.avatarUrl }}" alt="Account image">
           </td>
           <td>
             <ng-template #username>
@@ -63,6 +63,12 @@
                 <div class="material-icons md-16">more_vert</div>
               </button>
               <div class="dropdown-menu shadow" aria-labelledby="dropdownMenu2">
+                <button 
+                  class="dropdown-item" 
+                  type="button" 
+                  (click)="switchToThisAccount(account, i)">
+                    {{ "PAGES.HOME.USE_THIS" | translate }}
+                </button>
                 <button 
                   class="dropdown-item" 
                   type="button" 

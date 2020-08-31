@@ -30,7 +30,8 @@
       "UPDATE": "Atualizar",
       "MODIFY": "Modificar",
       "DELETE": "Excluir",
-      "LOGOUT": "Sair"
+      "LOGOUT": "Sair",
+      "USE_THIS": "Usar essa"
     },
     "MODAL": {
       "TITLE_CREATE": "Criar conta",

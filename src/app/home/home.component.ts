@@ -7,6 +7,7 @@ import * as firebase from 'firebase/app';
 import { Account } from '../models/account.model';
 import { AccountModalComponent } from './account-modal/account-modal.component';
 import { AuthService } from '../core/services/firebase/authservice.service'
+import { ElectronService } from 'app/core/services';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   
   public currentUser: User = new User('', '', '', []);
   public accounts: Account[];
+  public currentAccount: Account;
   public accountToDelete: Account;
 
   @ViewChild(AccountModalComponent)
@@ -25,6 +27,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private firebaseService: FirebaseService,
+    private electronService: ElectronService,
     private steamService: SteamService,
     private authService: AuthService
   ) { }
@@ -52,6 +55,7 @@ export class HomeComponent implements OnInit {
       snapshot.forEach((childOf: any) => {
         let account: Account = childOf.val();
         account.id = childOf.key;
+        if (account.status) this.currentAccount = account;
         this.accounts.push(account);
       });
     })
@@ -65,6 +69,26 @@ export class HomeComponent implements OnInit {
       });
       this.firebaseService.updateSteamAccount(account);
     });
+  }
+
+  public switchToThisAccount(account: Account, i: number): void {
+    // obtem as versoes blob dos arquivos de save da conta atual para serem salvas no firebase
+    let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
+    let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
+    
+    // troca o status da conta atual para false e salva a conta e os saves
+    this.currentAccount.status = false;
+    this.firebaseService.updateSteamAccount(this.currentAccount);
+    this.firebaseService.uploadSavesToStorage(this.currentUser.uid, this.currentAccount.steamId, gameProgressSave, gameSystemSave);
+
+    // troca o status da conta desejada para true e salva a conta    
+    account.status = true;
+    this.firebaseService.updateSteamAccount(account)
+
+    // obetem os arquivos do storage e salver no diretorio de saves do sfv
+    this.firebaseService.downloadSaveFromStorage(this.currentUser.uid, account.steamId);
+
+    this.ngOnInit();
   }
 
   public updateSteamAccount(account: Account) {

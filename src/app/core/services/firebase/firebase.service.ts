@@ -6,9 +6,16 @@ import 'firebase/storage'
 import { from, Observable } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
+import { ElectronService } from "../electron/electron.service";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class FirebaseService {
+
+  constructor(
+    private electronService: ElectronService,
+    private http: HttpClient
+  ) {}
 
   public saveSteamAccount(
     account: Account,
@@ -33,11 +40,31 @@ export class FirebaseService {
       }));
   }
 
-  uploadSavesToStorage(uid: string, steamId: string, gameProgressSave: Blob, gameSystemSave: Blob) {
+  public uploadSavesToStorage(uid: string, steamId: string, gameProgressSave: Blob, gameSystemSave: Blob) {
     firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gameprogress`)
       .put(gameProgressSave);
     firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gamesystem`)
       .put(gameSystemSave);
+  }
+
+  public downloadSaveFromStorage(uid: string, steamId: string) {
+    this.downloadSaveAndWrite(uid, steamId, 'GameProgressSave.sav', 'gameprogress');
+    this.downloadSaveAndWrite(uid, steamId, 'GameSystemSave.sav', 'gamesystem');
+  }
+
+  private downloadSaveAndWrite(uid: string, steamId: string, fileName: string, fileNameInStorage: string) {
+    // busca a url para download
+    firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/${fileNameInStorage}`).getDownloadURL()
+      .then((url) => {
+        // faz o download do arquivo que está no storage
+        this.http.get(url, {responseType: 'blob'}).subscribe((saveBlob) => {
+          // converte o tipo blob para arrayBuffer e envia ao serviço apropriado
+          // para ser gravado em disco
+          saveBlob.arrayBuffer().then((arrayBuff) => {
+            this.electronService.putFileToFolder(arrayBuff, fileName);
+          })
+        })
+      });
   }
 
   public updateSteamAccount(account: Account): Observable<any> {

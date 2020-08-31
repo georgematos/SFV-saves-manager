@@ -11,6 +11,7 @@ import { SteamService } from '../core/services/steam/steam.service';
 import { ConfirmationModalComponent } from 'app/confirmation-modal/confirmation-modal.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
+import { ElectronService } from 'app/core/services';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
   providers: [
     AuthGuard,
     SteamService,
-    FirebaseService
+    FirebaseService,
+    ElectronService
   ]
 })
 export class HomeModule { }

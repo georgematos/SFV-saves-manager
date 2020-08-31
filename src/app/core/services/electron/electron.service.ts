@@ -47,8 +47,13 @@ export class ElectronService {
     this.shell.openExternal(link);
   }
 
+  public putFileToFolder(fileBuffer: ArrayBuffer, filename: string) {
+    let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
+    let binaryFile = new Uint8Array(fileBuffer);
+    this.fs.writeFileSync(`${fullPath}/${filename}`, binaryFile, "binary");
+  }
+
   // public createBackupDir(nickname: string): void {
-  //   let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
   //   if (!this.fs.existsSync(fullPath)) {
   //     this.fs.mkdirSync(fullPath);
   //   } else {
