@@ -71,7 +71,8 @@ export class AccountModalComponent implements OnInit {
       .subscribe((resp) => {
         resp.response.players.forEach((p: any) => {
           let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email);
-            this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
+          account.status = true;
+          this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
             .subscribe(
               () => {
                 // this.createUserSteamBackupDir(nickname);

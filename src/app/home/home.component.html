@@ -65,9 +65,17 @@
               <div class="dropdown-menu shadow" aria-labelledby="dropdownMenu2">
                 <button 
                   class="dropdown-item" 
-                  type="button" 
+                  type="button"
+                  [disabled]="account.status"
                   (click)="switchToThisAccount(account, i)">
                     {{ "PAGES.HOME.USE_THIS" | translate }}
+                </button>
+                <button 
+                  class="dropdown-item" 
+                  type="button"
+                  [disabled]="!account.status"
+                  (click)="manualBackup(account)">
+                    {{ "PAGES.HOME.BACKUP" | translate }}
                 </button>
                 <button 
                   class="dropdown-item" 
@@ -102,3 +110,7 @@
 
 <app-account-modal (accountSavedEmitter)="updatePage($event)"></app-account-modal>
 <app-confirmation-modal (confirmationEmitter)="confirmDeleteAccount($event)"></app-confirmation-modal>
+
+<div *ngIf="successMsg" class="alert alert-success message" role="alert">
+  {{ "PAGES.HOME.SUCCESS_MSG" | translate }}
+</div>

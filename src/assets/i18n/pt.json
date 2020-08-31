@@ -21,6 +21,7 @@
     "HOME": {
       "ACCOUNT": "Conta",
       "STEAM_ACCOUNT": "Conta Steam",
+      "SUCCESS_MSG": "Ação concluída com exito",
       "NICKNAME": "Apelido do Perfil",
       "ACCOUNT_EMAIL": "Email",
       "ACCOUNT_NICKNAME": "Nickname",
@@ -31,7 +32,8 @@
       "MODIFY": "Modificar",
       "DELETE": "Excluir",
       "LOGOUT": "Sair",
-      "USE_THIS": "Usar essa"
+      "USE_THIS": "Usar conta",
+      "BACKUP": "Fazer backup"
     },
     "MODAL": {
       "TITLE_CREATE": "Criar conta",

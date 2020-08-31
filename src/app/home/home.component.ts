@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
@@ -8,6 +8,7 @@ import { Account } from '../models/account.model';
 import { AccountModalComponent } from './account-modal/account-modal.component';
 import { AuthService } from '../core/services/firebase/authservice.service'
 import { ElectronService } from 'app/core/services';
+import { viewClassName } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,8 @@ export class HomeComponent implements OnInit {
   public accounts: Account[];
   public currentAccount: Account;
   public accountToDelete: Account;
+
+  public successMsg = false;
 
   @ViewChild(AccountModalComponent)
   public accountModal: AccountModalComponent;
@@ -69,6 +72,18 @@ export class HomeComponent implements OnInit {
       });
       this.firebaseService.updateSteamAccount(account);
     });
+  }
+
+  public manualBackup(account: Account): void {
+    let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
+    let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
+    this.firebaseService.uploadSavesToStorage(this.currentUser.uid, account.steamId, gameSystemSave, gameProgressSave)
+      .then((resp) => {
+        this.successMsg = resp;
+        setTimeout(() => {
+          this.successMsg = false;
+        }, 3000);
+      })
   }
 
   public switchToThisAccount(account: Account, i: number): void {
@@ -127,6 +142,8 @@ export class HomeComponent implements OnInit {
 
   public updatePage(event: boolean) {
     if(event) {
+      this.currentAccount.status = false;
+      this.firebaseService.updateSteamAccount(this.currentAccount);
       this.ngOnInit();
     }
   }

@@ -40,11 +40,21 @@ export class FirebaseService {
       }));
   }
 
-  public uploadSavesToStorage(uid: string, steamId: string, gameProgressSave: Blob, gameSystemSave: Blob) {
-    firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gameprogress`)
-      .put(gameProgressSave);
-    firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gamesystem`)
-      .put(gameSystemSave);
+  public uploadSavesToStorage(
+    uid: string,
+    steamId: string,
+    gameProgressSave: Blob,
+    gameSystemSave: Blob): Promise<boolean> {
+      let success: Promise<boolean>;
+      try {
+        success = firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gameprogress`)
+          .put(gameProgressSave).then(() => true, () => false);
+        success = firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gamesystem`)
+          .put(gameSystemSave).then(() => true, () => false);
+        return success;
+      } catch (error) {
+        console.log(error)
+      }
   }
 
   public downloadSaveFromStorage(uid: string, steamId: string) {
