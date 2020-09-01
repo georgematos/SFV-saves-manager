@@ -12,6 +12,7 @@ import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
 import { SignupModule } from './signup/signup.module';
 import { TitleBarComponent } from './title-bar/title-bar.component';
+import { NgxElectronModule } from 'ngx-electron';
 // NG Translate
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SignupModule,
     AppRoutingModule,
     HttpClientModule,
+    NgxElectronModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

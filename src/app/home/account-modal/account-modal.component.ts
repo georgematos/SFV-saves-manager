@@ -4,6 +4,7 @@ import { ElectronService } from 'app/core/services';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { Account } from 'app/models/account.model';
+import { ElectronService as NgxElectron } from 'ngx-electron';
 import * as $ from 'jquery';
 
 @Component({
@@ -26,7 +27,8 @@ export class AccountModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
     private steamService: SteamService,
-    private electronService: ElectronService
+    private electronService: ElectronService,
+    private ngxElectron: NgxElectron
   ) { }
 
   ngOnInit(): void {
@@ -57,8 +59,8 @@ export class AccountModalComponent implements OnInit {
   public createAccount(): void {
     let nickname = this.modalForm.value.nickname;
     let email = this.modalForm.value.email;
-    let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
-    let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
+    let gameSystemSave = this.ngxElectron.ipcRenderer.sendSync('convertFileToBlob', 'GameSystemSave.sav');
+    let gameProgressSave = this.ngxElectron.ipcRenderer.sendSync('convertFileToBlob', 'GameProgressSave.sav');
 
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
     .subscribe((respFromSteam: any) => {

@@ -6,14 +6,14 @@ import 'firebase/storage'
 import { from, Observable } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
-import { ElectronService } from "../electron/electron.service";
 import { HttpClient } from "@angular/common/http";
+import { ElectronService } from 'ngx-electron';
 
 @Injectable()
 export class FirebaseService {
 
   constructor(
-    private electronService: ElectronService,
+    private ngxElectron: ElectronService,
     private http: HttpClient
   ) {}
 
@@ -71,7 +71,12 @@ export class FirebaseService {
           // converte o tipo blob para arrayBuffer e envia ao serviço apropriado
           // para ser gravado em disco
           saveBlob.arrayBuffer().then((arrayBuff) => {
-            this.electronService.putFileToFolder(arrayBuff, fileName);
+            const args = {
+              fileBuffer: arrayBuff,
+              fileName: fileName
+            }
+            let isSuccess = this.ngxElectron.ipcRenderer.sendSync('putFileToFolder', args);
+            console.log(isSuccess);
           })
         })
       });

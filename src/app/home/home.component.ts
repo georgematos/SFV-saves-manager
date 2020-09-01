@@ -1,14 +1,13 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { User } from 'app/models/user.model';
 import * as firebase from 'firebase/app';
+import { ElectronService } from 'ngx-electron';
+import { AuthService } from '../core/services/firebase/authservice.service';
 import { Account } from '../models/account.model';
 import { AccountModalComponent } from './account-modal/account-modal.component';
-import { AuthService } from '../core/services/firebase/authservice.service'
-import { ElectronService } from 'app/core/services';
-import { viewClassName } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -30,9 +29,9 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private firebaseService: FirebaseService,
-    private electronService: ElectronService,
     private steamService: SteamService,
-    private authService: AuthService
+    private authService: AuthService,
+    private ngxElectron: ElectronService
   ) { }
 
   ngOnInit(): void {
@@ -75,8 +74,11 @@ export class HomeComponent implements OnInit {
   }
 
   public manualBackup(account: Account): void {
-    let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
-    let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
+    // let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
+    // let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
+    console.log(this.ngxElectron)
+    let gameSystemSave = this.ngxElectron.ipcRenderer.sendSync('convertFileToBlob', 'GameSystemSave.sav');
+    let gameProgressSave = this.ngxElectron.ipcRenderer.sendSync('convertFileToBlob', 'GameProgressSave.sav');
     this.firebaseService.uploadSavesToStorage(this.currentUser.uid, account.steamId, gameSystemSave, gameProgressSave)
       .then((resp) => {
         this.successMsg = resp;
@@ -88,8 +90,9 @@ export class HomeComponent implements OnInit {
 
   public switchToThisAccount(account: Account, i: number): void {
     // obtem as versoes blob dos arquivos de save da conta atual para serem salvas no firebase
-    let gameSystemSave = this.electronService.convertFileToBlob('GameSystemSave.sav');
-    let gameProgressSave = this.electronService.convertFileToBlob('GameProgressSave.sav');
+
+    let gameSystemSave = this.ngxElectron.ipcRenderer.sendSync('convertFileToBlob', 'GameSystemSave.sav');
+    let gameProgressSave = this.ngxElectron.ipcRenderer.sendSync('convertFileToBlob', 'GameProgressSave.sav');
     
     // troca o status da conta atual para false e salva a conta e os saves
     this.currentAccount.status = false;

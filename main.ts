@@ -1,10 +1,14 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as fs from 'fs';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+serve = args.some(val => val === '--serve');
+
+const { ipcMain } = require('electron')
+const sfvSavesPathDir = 'AppData/Local/StreetFighterV/Saved/SaveGames';
 
 function createWindow(): BrowserWindow {
 
@@ -26,6 +30,27 @@ function createWindow(): BrowserWindow {
       enableRemoteModule: true
     },
   });
+
+  ipcMain.on('convertFileToBlob', (event, fileName) => {
+    try {
+      let filePath = `${process.env.HOME}/${sfvSavesPathDir}`;
+      const file = fs.readFileSync(`${filePath}/${fileName}`);
+      event.returnValue = file.buffer;
+    } catch (error) {
+      console.error(error);
+    }
+  })
+
+  ipcMain.on('putFileToFolder', (event, args) => {
+    try {
+      let fullPath = `${process.env.HOME}/${sfvSavesPathDir}`;
+      let binaryFile = new Uint8Array(args.fileBuffer);
+      fs.writeFileSync(`${fullPath}/${args.fileName}`, binaryFile, "binary");
+      event.returnValue = true;
+    } catch (error) {
+      console.error(error);
+    }
+  })
 
   if (serve) {
 

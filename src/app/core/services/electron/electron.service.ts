@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as childProcess from 'child_process';
 // If you import a module but never use any of the imported values other than as TypeScript types,
 // the resulting javascript file will look as if you never imported the module at all.
-import { ipcRenderer, remote, webFrame, shell } from 'electron';
+import { ipcMain, ipcRenderer, remote, webFrame, shell } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -11,6 +11,7 @@ import * as path from 'path';
 })
 export class ElectronService {
   ipcRenderer: typeof ipcRenderer;
+  ipcMain: typeof ipcMain;
   webFrame: typeof webFrame;
   remote: typeof remote;
   childProcess: typeof childProcess;
@@ -28,6 +29,7 @@ export class ElectronService {
     // Conditional imports
     if (this.isElectron) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
+      this.ipcMain = window.require('electron').ipcMain;
       this.webFrame = window.require('electron').webFrame;
       this.remote = window.require('electron').remote;
       this.childProcess = window.require('child_process');
@@ -37,21 +39,24 @@ export class ElectronService {
     }
   }
 
-  public convertFileToBlob(filename: string): Blob {
-    let filePath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
-    const file = this.fs.readFileSync(`${filePath}/${filename}`);
-    return new Blob([file.buffer]);
-  }
-
   public openLinkExternal(link: string) {
     this.shell.openExternal(link);
   }
+  
+  // public convertFileToBlob(): void {
+  //   this.ipcMain.on('convertFileToBlob', (event, resp) => {
+  //     let filePath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
+  //     const file = this.fs.readFileSync(`${filePath}/${resp}`);
+  //     event.reply(new Blob([file.buffer]));
+  //   })
+  // }
 
-  public putFileToFolder(fileBuffer: ArrayBuffer, filename: string) {
-    let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
-    let binaryFile = new Uint8Array(fileBuffer);
-    this.fs.writeFileSync(`${fullPath}/${filename}`, binaryFile, "binary");
-  }
+
+  // public putFileToFolder(fileBuffer: ArrayBuffer, filename: string) {
+  //   let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
+  //   let binaryFile = new Uint8Array(fileBuffer);
+  //   this.fs.writeFileSync(`${fullPath}/${filename}`, binaryFile, "binary");
+  // }
 
   // public createBackupDir(nickname: string): void {
   //   if (!this.fs.existsSync(fullPath)) {
