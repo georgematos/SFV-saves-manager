@@ -68,6 +68,7 @@
     "cross-env": "7.0.2",
     "electron": "9.2.0",
     "electron-builder": "22.8.0",
+    "electron-packager": "15.1.0",
     "electron-reload": "1.5.0",
     "eslint": "7.6.0",
     "eslint-plugin-import": "2.22.0",
