@@ -12,7 +12,6 @@ import { ConfirmationModalComponent } from 'app/confirmation-modal/confirmation-
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { ElectronService } from 'app/core/services';
-import { NgxElectronModule } from 'ngx-electron';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,6 @@ import { NgxElectronModule } from 'ngx-electron';
     ReactiveFormsModule,
     AccountModalModule,
     NgbModule,
-    NgxElectronModule
   ],
   providers: [
     AuthGuard,
