@@ -7,13 +7,13 @@ import { from, Observable } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
 import { HttpClient } from "@angular/common/http";
-import { ElectronService } from 'ngx-electron';
+import { ElectronService } from "../electron/electron.service";
 
 @Injectable()
 export class FirebaseService {
 
   constructor(
-    private ngxElectron: ElectronService,
+    private electronService: ElectronService,
     private http: HttpClient
   ) {}
 
@@ -32,7 +32,7 @@ export class FirebaseService {
             .push(account, () => {
               console.log('Conta criada');
               // salva os saves no storage
-              this.uploadSavesToStorage(uid, account.steamId, gameProgressSave, gameSystemSave);
+              this.uploadSavesToStorage(uid, account.steamId, new Blob([gameProgressSave]), new Blob([gameSystemSave]));
             }))
         } else {
           throw ('This account already exists, try another');
@@ -75,7 +75,7 @@ export class FirebaseService {
               fileBuffer: arrayBuff,
               fileName: fileName
             }
-            let isSuccess = this.ngxElectron.ipcRenderer.sendSync('putFileToFolder', args);
+            let isSuccess = this.electronService.ipcRenderer.sendSync('putFileToFolder', args);
             console.log(isSuccess);
           })
         })
