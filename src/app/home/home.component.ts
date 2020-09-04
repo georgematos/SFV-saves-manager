@@ -39,10 +39,10 @@ export class HomeComponent implements OnInit {
       if(user) {
         this.currentUser.uid = user.uid;
         this.currentUser.email = user.email;
-        this.fillAccounts();
       } else {
         console.log('User is not logged');
       }
+      this.fillAccounts();
     })
   }
 
@@ -141,9 +141,16 @@ export class HomeComponent implements OnInit {
     this.accountModal.title="update"
   }
 
-  public updatePage(event: boolean) {
+  public updatePageWhenCreate(event: boolean) {
     if(event) {
-      this.currentAccount.status = false;
+      if(this.currentAccount.id) this.currentAccount.status = false;
+      this.firebaseService.updateSteamAccount(this.currentAccount);
+      this.ngOnInit();
+    }
+  }
+
+  public updatePageWhenUpdate(event: boolean) {
+    if(event) {
       this.firebaseService.updateSteamAccount(this.currentAccount);
       this.ngOnInit();
     }

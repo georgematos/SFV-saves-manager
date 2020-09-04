@@ -16,6 +16,9 @@ export class AccountModalComponent implements OnInit {
   @Output()
   public accountSavedEmitter = new EventEmitter();
 
+  @Output()
+  public accountUpdatedEmitter = new EventEmitter();
+
   public modalForm: FormGroup;
   public errorMessage: string;
   
@@ -70,8 +73,7 @@ export class AccountModalComponent implements OnInit {
       this.steamService.getSteamUserData(respFromSteam.response.steamid)
       .subscribe((resp) => {
         resp.response.players.forEach((p: any) => {
-          let account = new Account(null, false, p.steamid, nickname, p.avatar, p.realname, email);
-          account.status = true;
+          let account = new Account(null, true, p.steamid, nickname, p.avatar, p.realname, email);
           this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
             .subscribe(
               () => {
@@ -89,14 +91,14 @@ export class AccountModalComponent implements OnInit {
   }
 
   public UpdateAccount(account: Account): void {
-      this.selectedAccount.nickname = this.modalForm.value.nickname;
-      this.selectedAccount.email = this.modalForm.value.email;
+      account.nickname = this.modalForm.value.nickname;
+      account.email = this.modalForm.value.email;
       this.firebaseService.updateSteamAccount(account)
         .subscribe(() => {
           // this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.nickname);
           $('.close').click(); // fecha o modal
           this.ngOnInit();
-          this.accountSavedEmitter.emit(true);
+          this.accountUpdatedEmitter.emit(true);
         });
   }
 

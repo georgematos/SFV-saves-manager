@@ -27,7 +27,6 @@ export class FirebaseService {
       (accountExists) => {
         if(!accountExists) {
           account.username === undefined ? account.username = 'false' : '';
-          console.log(account);
             (firebase.database().ref(`user_data/${uid}/accounts`)
             .push(account, () => {
               console.log('Conta criada');

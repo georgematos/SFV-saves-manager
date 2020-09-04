@@ -108,7 +108,7 @@
   </div>
 </div>
 
-<app-account-modal (accountSavedEmitter)="updatePage($event)"></app-account-modal>
+<app-account-modal (accountSavedEmitter)="updatePageWhenCreate($event)" (accountUpdatedEmitter)="updatePageWhenUpdate($event)"></app-account-modal>
 <app-confirmation-modal (confirmationEmitter)="confirmDeleteAccount($event)"></app-confirmation-modal>
 
 <div *ngIf="successMsg" class="alert alert-success message" role="alert">
