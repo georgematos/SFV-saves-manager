@@ -143,8 +143,6 @@ export class HomeComponent implements OnInit {
 
   public updatePageWhenCreate(event: boolean) {
     if(event) {
-      if(this.currentAccount.id) this.currentAccount.status = false;
-      this.firebaseService.updateSteamAccount(this.currentAccount);
       this.ngOnInit();
     }
   }

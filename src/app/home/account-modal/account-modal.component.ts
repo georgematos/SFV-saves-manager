@@ -95,7 +95,6 @@ export class AccountModalComponent implements OnInit {
       account.email = this.modalForm.value.email;
       this.firebaseService.updateSteamAccount(account)
         .subscribe(() => {
-          // this.updateUserSteamBackupDir(this.modalForm.value.nickname, this.selectedAccount.nickname);
           $('.close').click(); // fecha o modal
           this.ngOnInit();
           this.accountUpdatedEmitter.emit(true);
@@ -110,12 +109,5 @@ export class AccountModalComponent implements OnInit {
     this.electronService.openLinkExternal(link)
   }
 
-  // public createUserSteamBackupDir(nickname: string): void {
-  //   this.electronService.createBackupDir(nickname);
-  // }
-
-  // public updateUserSteamBackupDir(nickname: string, newNickname: string): void {
-  //   this.electronService.updateBackupDirName(nickname, newNickname);
-  // }
 }
 
