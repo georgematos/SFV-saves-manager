@@ -10,11 +10,14 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  private lang: string = 'pt';
+
   constructor(
     private electronService: ElectronService,
     private translate: TranslateService
   ) {
-    this.translate.setDefaultLang('pt');
+    this.translate.setDefaultLang(this.lang);
     console.log('AppConfig', AppConfig);
 
     if (electronService.isElectron) {
@@ -30,6 +33,11 @@ export class AppComponent {
 
     };
 
+    
     firebase.initializeApp(firebaseConfig);
+  }
+  
+  public changeLanguage(event: string): void {
+    this.translate.setDefaultLang(event);
   }
 }

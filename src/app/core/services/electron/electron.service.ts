@@ -42,35 +42,4 @@ export class ElectronService {
   public openLinkExternal(link: string) {
     this.shell.openExternal(link);
   }
-  
-  // public convertFileToBlob(): void {
-  //   this.ipcMain.on('convertFileToBlob', (event, resp) => {
-  //     let filePath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
-  //     const file = this.fs.readFileSync(`${filePath}/${resp}`);
-  //     event.reply(new Blob([file.buffer]));
-  //   })
-  // }
-
-
-  // public putFileToFolder(fileBuffer: ArrayBuffer, filename: string) {
-  //   let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}`;
-  //   let binaryFile = new Uint8Array(fileBuffer);
-  //   this.fs.writeFileSync(`${fullPath}/${filename}`, binaryFile, "binary");
-  // }
-
-  // public createBackupDir(nickname: string): void {
-  //   if (!this.fs.existsSync(fullPath)) {
-  //     this.fs.mkdirSync(fullPath);
-  //   } else {
-  //     console.log('O dir já existe');
-  //   }
-  // }
-
-  // public updateBackupDirName(nickname: string, newNickname: string): void {
-  //   let fullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${nickname}`;
-  //   let newFullPath = `${process.env.HOME}/${this.sfvSavesPathDir}/${newNickname}`;
-  //   if (this.fs.existsSync(fullPath)) {
-  //     this.fs.renameSync(fullPath, newFullPath);
-  //   }
-  // }
 }

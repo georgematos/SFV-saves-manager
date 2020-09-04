@@ -1,14 +1,56 @@
 {
   "GLOBAL": {
-    "TITLE": "SFV Saves Manager"
+    "TITLE": "SFV Saves Manager",
+    "CLOSE": "Close",
+    "SAVE_CHANGES": "Save",
+    "CONFIRM": "Yes"
   },
   "PAGES": {
-    "HOME": {
+    "LOGIN": {
       "LOGIN": "Login",
-      "PASSWORD": "Password"
+      "PASSWORD": "Password",
+      "GO_TO_SIGNUP": "Register"
     },
     "SIGNUP": {
+      "PASSWORD": "Password",
+      "PASSWORD_CONFIRM": "Confirm password",
+      "EMAIL": "Email",
+      "SIGNUP": "Register",
       "GO_TO_HOME": "Login"
+    },
+    "HOME": {
+      "ACCOUNT": "Account",
+      "STEAM_ACCOUNT": "Steam account",
+      "SUCCESS_MSG": "Action successfully completed",
+      "NICKNAME": "Profile Nickname",
+      "ACCOUNT_EMAIL": "Email",
+      "ACCOUNT_NICKNAME": "Nickname",
+      "STEAM_ACCOUNT_NOT_CONFIGURED": "Configure your realname on your Steam profile",
+      "STEAM_ACCOUNT_ALREADY_EXISTS": "This account already exists, try another",
+      "ACCOUNT_USER_NOT_FOUND": "User not found",
+      "UPDATE": "Update",
+      "MODIFY": "Modify",
+      "DELETE": "Delete",
+      "LOGOUT": "Logout",
+      "USE_THIS": "Use account",
+      "BACKUP": "Backup"
+    },
+    "MODAL": {
+      "TITLE_CREATE": "Create account",
+      "TITLE_UPDATE": "Change account",
+      "TITLE_POPOVER": "Hint!",
+      "POPOVER": "Use the same nickname as your custom Steam URL.",
+      "CLICK_HERE_TO_CONFIGURE": "Click here to configure"
+    },
+    "ALERTS": {
+      "WARNING": "Attention",
+      "DELETE": "Are you sure you want to delete?"
     }
+  },
+  "ERROR": {
+    "INVALID_LOGIN": "Invalid login",
+    "INVALID_PASSWORD": "Invalid password",
+    "INVALID_EMAIL": "Invalid email",
+    "DIFFERENT_PASSWORD": "Passwords are different"
   }
 }
