@@ -14,16 +14,14 @@ import * as $ from 'jquery';
 export class AccountModalComponent implements OnInit {
 
   @Output()
-  public accountSavedEmitter = new EventEmitter();
-
-  @Output()
   public accountUpdatedEmitter = new EventEmitter();
+
+  public selectedAccount: Account;
 
   public modalForm: FormGroup;
   public errorMessage: string;
-  
   public title: string;
-  public selectedAccount: Account;
+  public accountToModify: Account;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,7 +49,7 @@ export class AccountModalComponent implements OnInit {
 
   public save(): void {
     if(this.modalForm.value.id) {
-      this.UpdateAccount(this.selectedAccount);
+      this.UpdateAccount(this.accountToModify);
     } else {
       this.createAccount();
     }
@@ -77,9 +75,9 @@ export class AccountModalComponent implements OnInit {
           this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
             .subscribe(
               () => {
-                // this.createUserSteamBackupDir(nickname);
+                this.selectedAccount.status = false;
+                this.UpdateAccount(this.selectedAccount);
                 this.ngOnInit();
-                this.accountSavedEmitter.emit(true);
               }, 
               (error) => {
                 this.errorMessage = error;

@@ -36,7 +36,8 @@
               type="button" 
               class="btn btn-success btn-circle btn-sm" 
               data-toggle="modal" 
-              data-target="#AccountModal">
+              data-target="#AccountModal"
+              (click)="sendCurrentAccountToChild()">
                 <div class="material-icons md-16">add</div>
             </button>
           </th>
@@ -108,7 +109,7 @@
   </div>
 </div>
 
-<app-account-modal (accountSavedEmitter)="updatePageWhenCreate($event)" (accountUpdatedEmitter)="updatePageWhenUpdate($event)"></app-account-modal>
+<app-account-modal (accountUpdatedEmitter)="updatePageWhenUpdate($event)"></app-account-modal>
 <app-confirmation-modal (confirmationEmitter)="confirmDeleteAccount($event)"></app-confirmation-modal>
 
 <div *ngIf="successMsg" class="alert alert-success message" role="alert">

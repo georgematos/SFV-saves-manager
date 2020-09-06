@@ -95,13 +95,13 @@ export class HomeComponent implements OnInit {
     // troca o status da conta atual para false e salva a conta e os saves
     this.currentAccount.status = false;
     this.firebaseService.updateSteamAccount(this.currentAccount);
-    this.firebaseService.uploadSavesToStorage(this.currentUser.uid, this.currentAccount.steamId, new Blob([gameSystemSave]), new Blob([gameProgressSave]));
+    this.firebaseService.uploadSavesToStorage(this.currentUser.uid, this.currentAccount.steamId, new Blob([gameProgressSave]), new Blob([gameSystemSave]));
 
     // troca o status da conta desejada para true e salva a conta    
     account.status = true;
     this.firebaseService.updateSteamAccount(account)
 
-    // obetem os arquivos do storage e salver no diretorio de saves do sfv
+    // obetem os arquivos do storage e salva no diretorio de saves do sfv
     this.firebaseService.downloadSaveFromStorage(this.currentUser.uid, account.steamId);
 
     this.ngOnInit();
@@ -137,14 +137,12 @@ export class HomeComponent implements OnInit {
 
   public fillModalToUpdate(account: Account) {
     this.accountModal.modalForm.setValue({ id: account.id, nickname: account.nickname, email: account.email });
-    this.accountModal.selectedAccount = account;
+    this.accountModal.accountToModify = account;
     this.accountModal.title="update"
   }
 
-  public updatePageWhenCreate(event: boolean) {
-    if(event) {
-      this.ngOnInit();
-    }
+  public sendCurrentAccountToChild(): void {
+    this.accountModal.selectedAccount = this.currentAccount;
   }
 
   public updatePageWhenUpdate(event: boolean) {
@@ -153,7 +151,6 @@ export class HomeComponent implements OnInit {
       this.ngOnInit();
     }
   }
-
 }
 
 $(document).ready(() => {
