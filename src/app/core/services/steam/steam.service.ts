@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class SteamService {
@@ -16,7 +16,7 @@ export class SteamService {
     try {
       return this.http.get(`${this.baseUrl}/GetPlayerSummaries/v0002/?key=${this.apiKey}&steamids=${steamId}&format=json`);
     } catch(error) {
-      console.info(error.message)
+      console.error(error.message)
     }
   }
 
@@ -24,7 +24,7 @@ export class SteamService {
     try {
       return this.http.get(`${this.baseUrl}/ResolveVanityURL/v0001/?key=${this.apiKey}&vanityurl=${username}`);
     } catch(error) {
-      console.info(error.message);
+      console.error(error.message);
     }
   }
 }

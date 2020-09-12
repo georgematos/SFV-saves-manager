@@ -62,30 +62,30 @@ export class AccountModalComponent implements OnInit {
     let gameProgressSave = this.electronService.ipcRenderer.sendSync('convertFileToBlob', 'GameProgressSave.sav');
 
     this.steamService.getSteamIdByUsername(this.modalForm.value.nickname)
-    .subscribe((respFromSteam: any) => {
-      this.errorMessage = '';
-      if(!respFromSteam.response.steamid) {
-        this.errorMessage = 'User not found';
-        throw('User not found');
-      }
-      this.steamService.getSteamUserData(respFromSteam.response.steamid)
-      .subscribe((resp) => {
-        resp.response.players.forEach((p: any) => {
-          let account = new Account(null, true, p.steamid, nickname, p.avatar, p.realname, email);
-          this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
-            .subscribe(
-              () => {
-                this.selectedAccount.status = false;
-                this.UpdateAccount(this.selectedAccount);
-                this.ngOnInit();
-              }, 
-              (error) => {
-                this.errorMessage = error;
-              }
-            );
-        });
-      })
-    });
+      .subscribe((respFromSteam: any) => {
+        this.errorMessage = '';
+        if(!respFromSteam.response.steamid) {
+          this.errorMessage = 'User not found';
+          throw('User not found');
+        }
+        this.steamService.getSteamUserData(respFromSteam.response.steamid)
+          .subscribe((resp) => {
+            resp.response.players.forEach((p: any) => {
+              let account = new Account(null, true, p.steamid, nickname, p.avatar, p.realname, email);
+              this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
+                .subscribe(
+                  () => {
+                    this.selectedAccount.status = false;
+                    this.UpdateAccount(this.selectedAccount);
+                    this.ngOnInit();
+                  }, 
+                  (error) => {
+                    this.errorMessage = error;
+                  }
+                );
+            });
+          })
+      });
   }
 
   public UpdateAccount(account: Account): void {
