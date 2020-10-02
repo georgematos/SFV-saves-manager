@@ -71,8 +71,10 @@ export class AccountModalComponent implements OnInit {
             this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
               .subscribe(
                 () => {
-                  this.selectedAccount.status = false;
-                  this.UpdateAccount(this.selectedAccount);
+                  //if(this.selectedAccount) {
+                    this.selectedAccount.status = false;
+                    this.UpdateAccount(this.selectedAccount);
+                  //}
                   this.ngOnInit();
                 },
                 (error) => {

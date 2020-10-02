@@ -4,6 +4,8 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { User } from 'app/models/user.model';
 import * as firebase from 'firebase/app';
+import { from, pipe } from 'rxjs';
+import { filter } from 'rxjs/operators'
 import { ElectronService } from '../core/services/electron/electron.service'
 import { AuthService } from '../core/services/firebase/authservice.service';
 import { Account } from '../models/account.model';
@@ -15,7 +17,7 @@ import { AccountModalComponent } from './account-modal/account-modal.component';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  
+
   public currentUser: User = new User('', '', '', []);
   public accounts: Account[];
   public currentAccount: Account;
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     firebase.auth().onAuthStateChanged((user) => {
-      if(user) {
+      if (user) {
         this.currentUser.uid = user.uid;
         this.currentUser.email = user.email;
       } else {
@@ -53,11 +55,10 @@ export class HomeComponent implements OnInit {
   public fillAccounts(): void {
     this.accounts = [];
     this.firebaseService.getSteamAccounts(this.currentUser)
-      .subscribe((accounts: Array<Account>) => {
-        console.log(accounts)
-        this.accounts = accounts;
-        this.currentAccount = this.accounts.find(acc => acc.status === true);
-      })    
+    .then((accounts: Array<Account>) => {
+      this.accounts = accounts;
+      this.currentAccount = this.accounts.find(x => x.status)
+    })
   }
 
   public updateThisAccount(account: Account): void {
@@ -88,7 +89,7 @@ export class HomeComponent implements OnInit {
 
     let gameSystemSave = this.electronService.ipcRenderer.sendSync('convertFileToBlob', 'GameSystemSave.sav');
     let gameProgressSave = this.electronService.ipcRenderer.sendSync('convertFileToBlob', 'GameProgressSave.sav');
-    
+
     // troca o status da conta atual para false e salva a conta e os saves
     this.currentAccount.status = false;
     this.firebaseService.updateSteamAccount(this.currentAccount);
@@ -114,7 +115,7 @@ export class HomeComponent implements OnInit {
   }
 
   public confirmDeleteAccount(event: boolean) {
-    if(event) {
+    if (event) {
       this.deleteSteamAccount(this.accountToDelete);
     }
   }
@@ -135,7 +136,7 @@ export class HomeComponent implements OnInit {
   public fillModalToUpdate(account: Account) {
     this.accountModal.modalForm.setValue({ id: account.id, nickname: account.nickname, email: account.email });
     this.accountModal.accountToModify = account;
-    this.accountModal.title="update"
+    this.accountModal.title = "update"
   }
 
   public sendCurrentAccountToChild(): void {
@@ -143,7 +144,7 @@ export class HomeComponent implements OnInit {
   }
 
   public updatePageWhenUpdate(event: boolean) {
-    if(event) {
+    if (event) {
       this.firebaseService.updateSteamAccount(this.currentAccount);
       this.ngOnInit();
     }

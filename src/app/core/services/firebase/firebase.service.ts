@@ -92,10 +92,10 @@ export class FirebaseService {
     }
   }
 
-  public getSteamAccounts(user: User): Observable<any> {
+  public async getSteamAccounts(user: User): Promise<any> {
     let accounts: Array<Account> = [];
     try {
-      firebase.database()
+      await firebase.database()
         .ref(`user_data/${user.uid}/accounts`)
         .orderByChild('data')
         .once('value', (snapshot: any) => {
@@ -106,7 +106,7 @@ export class FirebaseService {
             accounts.push(account);
           });
         })
-      return of(accounts);
+        return accounts;
     } catch (error) {
       console.error(error)
     }
