@@ -6,6 +6,7 @@ import { SteamService } from 'app/core/services/steam/steam.service';
 import { Account } from 'app/models/account.model';
 import * as $ from 'jquery';
 import { verify } from 'crypto';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-account-modal',
@@ -71,10 +72,8 @@ export class AccountModalComponent implements OnInit {
             this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
               .subscribe(
                 () => {
-                  //if(this.selectedAccount) {
-                    this.selectedAccount.status = false;
-                    this.UpdateAccount(this.selectedAccount);
-                  //}
+                  this.selectedAccount.status = false;
+                  this.UpdateAccount(this.selectedAccount);
                   this.ngOnInit();
                 },
                 (error) => {
@@ -101,8 +100,8 @@ export class AccountModalComponent implements OnInit {
   }
 
   public UpdateAccount(account: Account): void {
-    account.nickname = this.modalForm.value.nickname;
-    account.email = this.modalForm.value.email;
+    account.nickname = this.selectedAccount ? this.selectedAccount.nickname : this.modalForm.value.nickname;
+    account.email = this.selectedAccount ? this.selectedAccount.email : this.modalForm.value.email;
     this.firebaseService.updateSteamAccount(account)
       .subscribe(() => {
         $('.close').click(); // fecha o modal

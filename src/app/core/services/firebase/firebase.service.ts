@@ -24,14 +24,14 @@ export class FirebaseService {
   ): Observable<any> {
     let uid = firebase.auth().currentUser.uid;
     return from(this.accountExists(uid, account.steamId).then(
-      (accountExists) => {
-        if (!accountExists) {
+      (ifAccountExists) => {
+        if (!ifAccountExists) {
           account.username === undefined ? account.username = 'false' : '';
           (firebase.database().ref(`user_data/${uid}/accounts`)
             .push(account, () => {
               console.log('Conta criada');
               // salva os saves no storage
-              this.uploadSavesToStorage(uid, account.steamId, new Blob([gameProgressSave]), new Blob([gameSystemSave]));
+              //this.uploadSavesToStorage(uid, account.steamId, new Blob([gameProgressSave]), new Blob([gameSystemSave]));
             }))
         } else {
           throw ('This account already exists, try another');
@@ -106,7 +106,7 @@ export class FirebaseService {
             accounts.push(account);
           });
         })
-        return accounts;
+      return accounts;
     } catch (error) {
       console.error(error)
     }
