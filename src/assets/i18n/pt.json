@@ -22,6 +22,7 @@
       "ACCOUNT": "Conta",
       "STEAM_ACCOUNT": "Conta Steam",
       "SUCCESS_MSG": "Ação concluída com exito",
+      "DELETE_ERROR_MSG": "A conta selecionada não pode ser excluída",
       "NICKNAME": "Apelido do Perfil",
       "ACCOUNT_EMAIL": "Email",
       "ACCOUNT_NICKNAME": "Nickname",

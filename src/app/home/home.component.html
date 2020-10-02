@@ -115,3 +115,7 @@
 <div *ngIf="successMsg" class="alert alert-success message" role="alert">
   {{ "PAGES.HOME.SUCCESS_MSG" | translate }}
 </div>
+
+<div *ngIf="msgError" class="alert alert-danger message" role="alert">
+  {{ "PAGES.HOME.DELETE_ERROR_MSG" | translate }}
+</div>

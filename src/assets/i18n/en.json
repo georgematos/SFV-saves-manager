@@ -22,6 +22,7 @@
       "ACCOUNT": "Account",
       "STEAM_ACCOUNT": "Steam account",
       "SUCCESS_MSG": "Action successfully completed",
+      "DELETE_ERROR_MSG": "The current accounc can't be deleted",
       "NICKNAME": "Profile Nickname",
       "ACCOUNT_EMAIL": "Email",
       "ACCOUNT_NICKNAME": "Nickname",

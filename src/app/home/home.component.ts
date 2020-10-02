@@ -4,9 +4,7 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { User } from 'app/models/user.model';
 import * as firebase from 'firebase/app';
-import { from, pipe } from 'rxjs';
-import { filter } from 'rxjs/operators'
-import { ElectronService } from '../core/services/electron/electron.service'
+import { ElectronService } from '../core/services/electron/electron.service';
 import { AuthService } from '../core/services/firebase/authservice.service';
 import { Account } from '../models/account.model';
 import { AccountModalComponent } from './account-modal/account-modal.component';
@@ -24,6 +22,7 @@ export class HomeComponent implements OnInit {
   public accountToDelete: Account;
 
   public successMsg = false;
+  public msgError = false;
 
   @ViewChild(AccountModalComponent)
   public accountModal: AccountModalComponent;
@@ -44,6 +43,7 @@ export class HomeComponent implements OnInit {
       } else {
         console.log('User is not logged');
       }
+      this.msgError = false;
       this.fillAccounts();
     })
   }
@@ -55,10 +55,10 @@ export class HomeComponent implements OnInit {
   public fillAccounts(): void {
     this.accounts = [];
     this.firebaseService.getSteamAccounts(this.currentUser)
-    .then((accounts: Array<Account>) => {
-      this.accounts = accounts;
-      this.currentAccount = this.accounts.find(x => x.status)
-    })
+      .then((accounts: Array<Account>) => {
+        this.accounts = accounts;
+        this.currentAccount = this.accounts.find(x => x.status)
+      })
   }
 
   public updateThisAccount(account: Account): void {
@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
 
     // troca o status da conta desejada para true e salva a conta    
     account.status = true;
-    this.firebaseService.updateSteamAccount(account)
+    this.firebaseService.updateSteamAccount(account);
 
     // obetem os arquivos do storage e salva no diretorio de saves do sfv
     this.firebaseService.downloadSaveFromStorage(this.currentUser.uid, account.steamId);
@@ -121,9 +121,14 @@ export class HomeComponent implements OnInit {
   }
 
   public deleteSteamAccount(account: Account) {
-    this.firebaseService.deleteSteamAccount(account).subscribe(() => {
-      this.ngOnInit();
-    });
+    if(!account.status) {
+      this.firebaseService.deleteSteamAccount(account).subscribe(() => {
+        this.ngOnInit();
+      });
+    } else {
+      this.msgError = true;
+      setTimeout(() => {this.msgError = false}, 4000)
+    }
   }
 
   public logout(): void {

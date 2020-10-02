@@ -5,8 +5,6 @@ import { FirebaseService } from 'app/core/services/firebase/firebase.service';
 import { SteamService } from 'app/core/services/steam/steam.service';
 import { Account } from 'app/models/account.model';
 import * as $ from 'jquery';
-import { verify } from 'crypto';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-account-modal',
@@ -51,7 +49,7 @@ export class AccountModalComponent implements OnInit {
 
   public save(): void {
     if (this.modalForm.value.id) {
-      this.UpdateAccount(this.accountToModify);
+      this.updateAccount(this.accountToModify);
     } else {
       this.createAccount();
     }
@@ -73,7 +71,7 @@ export class AccountModalComponent implements OnInit {
               .subscribe(
                 () => {
                   this.selectedAccount.status = false;
-                  this.UpdateAccount(this.selectedAccount);
+                  this.updateAccount(this.selectedAccount);
                   this.ngOnInit();
                 },
                 (error) => {
@@ -99,7 +97,7 @@ export class AccountModalComponent implements OnInit {
     return account;
   }
 
-  public UpdateAccount(account: Account): void {
+  public updateAccount(account: Account): void {
     account.nickname = this.selectedAccount ? this.selectedAccount.nickname : this.modalForm.value.nickname;
     account.email = this.selectedAccount ? this.selectedAccount.email : this.modalForm.value.email;
     this.firebaseService.updateSteamAccount(account)

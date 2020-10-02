@@ -1,12 +1,12 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as firebase from "firebase/app";
-import 'firebase/database';
 import 'firebase/auth';
-import 'firebase/storage'
-import { from, Observable, of } from "rxjs";
+import 'firebase/database';
+import 'firebase/storage';
+import { from, Observable } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
-import { HttpClient } from "@angular/common/http";
 import { ElectronService } from "../electron/electron.service";
 
 @Injectable()
