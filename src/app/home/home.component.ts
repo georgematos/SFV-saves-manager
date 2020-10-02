@@ -53,14 +53,11 @@ export class HomeComponent implements OnInit {
   public fillAccounts(): void {
     this.accounts = [];
     this.firebaseService.getSteamAccounts(this.currentUser)
-    .subscribe((snapshot: any) => {
-      snapshot.forEach((childOf: any) => {
-        let account: Account = childOf.val();
-        account.id = childOf.key;
-        if (account.status) this.currentAccount = account;
-        this.accounts.push(account);
-      });
-    })
+      .subscribe((accounts: Array<Account>) => {
+        console.log(accounts)
+        this.accounts = accounts;
+        this.currentAccount = this.accounts.find(acc => acc.status === true);
+      })    
   }
 
   public updateThisAccount(account: Account): void {

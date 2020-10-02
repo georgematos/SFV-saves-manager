@@ -3,7 +3,7 @@ import * as firebase from "firebase/app";
 import 'firebase/database';
 import 'firebase/auth';
 import 'firebase/storage'
-import { from, Observable } from "rxjs";
+import { from, Observable, of } from "rxjs";
 import { Account } from '../../../models/account.model';
 import { User } from "../../../models/user.model";
 import { HttpClient } from "@angular/common/http";
@@ -15,7 +15,7 @@ export class FirebaseService {
   constructor(
     private electronService: ElectronService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   public saveSteamAccount(
     account: Account,
@@ -25,9 +25,9 @@ export class FirebaseService {
     let uid = firebase.auth().currentUser.uid;
     return from(this.accountExists(uid, account.steamId).then(
       (accountExists) => {
-        if(!accountExists) {
+        if (!accountExists) {
           account.username === undefined ? account.username = 'false' : '';
-            (firebase.database().ref(`user_data/${uid}/accounts`)
+          (firebase.database().ref(`user_data/${uid}/accounts`)
             .push(account, () => {
               console.log('Conta criada');
               // salva os saves no storage
@@ -44,16 +44,16 @@ export class FirebaseService {
     steamId: string,
     gameProgressSave: Blob,
     gameSystemSave: Blob): Promise<boolean> {
-      let success: Promise<boolean>;
-      try {
-        success = firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gameprogress`)
-          .put(gameProgressSave).then(() => true, () => false);
-        success = firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gamesystem`)
-          .put(gameSystemSave).then(() => true, () => false);
-        return success;
-      } catch (error) {
-        console.log(error)
-      }
+    let success: Promise<boolean>;
+    try {
+      success = firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gameprogress`)
+        .put(gameProgressSave).then(() => true, () => false);
+      success = firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/gamesystem`)
+        .put(gameSystemSave).then(() => true, () => false);
+      return success;
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   public downloadSaveFromStorage(uid: string, steamId: string) {
@@ -66,7 +66,7 @@ export class FirebaseService {
     firebase.storage().ref(`user_data/${uid}/accounts/${steamId}/${fileNameInStorage}`).getDownloadURL()
       .then((url) => {
         // faz o download do arquivo que está no storage
-        this.http.get(url, {responseType: 'blob'}).subscribe((saveBlob) => {
+        this.http.get(url, { responseType: 'blob' }).subscribe((saveBlob) => {
           // converte o tipo blob para arrayBuffer e envia ao serviço apropriado
           // para ser gravado em disco
           saveBlob.arrayBuffer().then((arrayBuff) => {
@@ -85,21 +85,30 @@ export class FirebaseService {
     let uid = firebase.auth().currentUser.uid;
     try {
       return from(firebase.database()
-      .ref(`user_data/${uid}/accounts/${account.id}`)
-      .update(account));
+        .ref(`user_data/${uid}/accounts/${account.id}`)
+        .update(account));
     } catch (error) {
       console.log(error);
     }
   }
 
   public getSteamAccounts(user: User): Observable<any> {
+    let accounts: Array<Account> = [];
     try {
-      return from(firebase.database()
+      firebase.database()
         .ref(`user_data/${user.uid}/accounts`)
         .orderByChild('data')
-        .once('value'));
-    } catch(error) {
-      console.error(error);
+        .once('value', (snapshot: any) => {
+          let account: Account;
+          snapshot.forEach((childOf: any) => {
+            account = childOf.val();
+            account.id = childOf.key;
+            accounts.push(account);
+          });
+        })
+      return of(accounts);
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -108,7 +117,7 @@ export class FirebaseService {
       return from(firebase.database()
         .ref(`user_data/${firebase.auth().currentUser.uid}/accounts/${account.id}`)
         .remove());
-    } catch(error) {
+    } catch (error) {
       console.error(error);
     }
   }
@@ -116,7 +125,7 @@ export class FirebaseService {
   public async accountExists(uid: string, steamId: string): Promise<boolean> {
     let exists: boolean;
     try {
-        await firebase.database()
+      await firebase.database()
         .ref(`user_data/${uid}/accounts`)
         .orderByChild('steamId')
         .equalTo(steamId)
