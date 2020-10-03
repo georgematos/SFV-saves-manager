@@ -16,6 +16,9 @@ export class AccountModalComponent implements OnInit {
   @Output()
   public accountUpdatedEmitter = new EventEmitter();
 
+  @Output()
+  public accountCreatedEmitter = new EventEmitter();
+
   public selectedAccount: Account;
 
   public modalForm: FormGroup;
@@ -70,9 +73,12 @@ export class AccountModalComponent implements OnInit {
             this.firebaseService.saveSteamAccount(account, gameProgressSave, gameSystemSave)
               .subscribe(
                 () => {
-                  this.selectedAccount.status = false;
-                  this.updateAccount(this.selectedAccount);
+                  if (this.selectedAccount) {
+                    this.selectedAccount.status = false;
+                    this.updateAccount(this.selectedAccount);
+                  }
                   this.ngOnInit();
+                  this.accountCreatedEmitter.emit(true)
                 },
                 (error) => {
                   this.errorMessage = error;

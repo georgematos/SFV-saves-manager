@@ -154,6 +154,12 @@ export class HomeComponent implements OnInit {
       this.ngOnInit();
     }
   }
+
+  public updatePageWhenCreate(event: boolean) {
+    if(event) {
+      this.ngOnInit();
+    }
+  }
 }
 
 $(document).ready(() => {
