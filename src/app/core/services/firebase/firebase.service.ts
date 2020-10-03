@@ -31,7 +31,7 @@ export class FirebaseService {
             .push(account, () => {
               console.log('Conta criada');
               // salva os saves no storage
-              //this.uploadSavesToStorage(uid, account.steamId, new Blob([gameProgressSave]), new Blob([gameSystemSave]));
+              this.uploadSavesToStorage(uid, account.steamId, new Blob([gameProgressSave]), new Blob([gameSystemSave]));
             }))
         } else {
           throw ('This account already exists, try another');
